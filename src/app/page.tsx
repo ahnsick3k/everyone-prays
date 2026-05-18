@@ -50,7 +50,6 @@ export default function HomePage() {
               icon: '/icon-192.png',
               tag: 'prayer-alarm',
               requireInteraction: true,
-              vibrate: [200, 100, 200, 100, 200],
             });
           });
         }
@@ -338,7 +337,6 @@ export default function HomePage() {
                   body: '알림이 정상 작동합니다!',
                   icon: '/icon-192.png',
                   tag: 'test-alarm',
-                  vibrate: [200, 100, 200],
                 });
               }
             }}
