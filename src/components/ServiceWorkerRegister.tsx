@@ -10,11 +10,6 @@ export default function ServiceWorkerRegister() {
         .then((registration) => {
           console.log('SW registered:', registration.scope);
 
-          // Request notification permission
-          if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission();
-          }
-
           // Tell SW to start alarm checking
           registration.active?.postMessage('START_ALARM');
           navigator.serviceWorker.ready.then((reg) => {

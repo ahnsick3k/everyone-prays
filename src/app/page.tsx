@@ -11,6 +11,7 @@ export default function HomePage() {
   const [alarm, setAlarm] = useState<Alarm | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [recentNames, setRecentNames] = useState<string[]>([]);
+  const [notifPermission, setNotifPermission] = useState<string>('default');
 
   const today = new Date();
   const dateStr = today.toLocaleDateString('ko-KR', {
@@ -24,6 +25,9 @@ export default function HomePage() {
   useEffect(() => {
     loadAlarm();
     loadRecentNames();
+    if ('Notification' in window) {
+      setNotifPermission(Notification.permission);
+    }
   }, []);
 
   async function loadAlarm() {
@@ -62,18 +66,25 @@ export default function HomePage() {
   }
 
   async function handleAlarmToggle() {
+    // iOS requires permission request from user gesture
+    const granted = await requestNotificationPermission();
+    setNotifPermission(granted ? 'granted' : 'denied');
+
+    if (!granted) {
+      alert('알림 권한을 허용해주세요. 설정 > 알림에서 변경할 수 있습니다.');
+      return;
+    }
+
     if (!alarm) {
       const newAlarm: Alarm = { id: uuidv4(), time: '06:00', enabled: true, repeat: true };
       await db.alarms.add(newAlarm);
       setAlarm(newAlarm);
-      await requestNotificationPermission();
+      notifyServiceWorker('START_ALARM');
     } else {
       const updated = { ...alarm, enabled: !alarm.enabled };
       await db.alarms.put(updated);
       setAlarm(updated);
       if (updated.enabled) {
-        await requestNotificationPermission();
-        
         notifyServiceWorker('START_ALARM');
       }
     }
@@ -277,6 +288,18 @@ export default function HomePage() {
           />
         </button>
       </div>
+
+      {/* 알림 상태 표시 */}
+      {notifPermission !== 'granted' && (
+        <p className="text-caption" style={{ marginTop: 12, color: 'var(--color-error)', textAlign: 'center' }}>
+          ⚠️ 알림 권한이 없습니다. 토글을 켜서 알림을 허용해주세요.
+        </p>
+      )}
+      {notifPermission === 'granted' && alarm?.enabled && (
+        <p className="text-caption" style={{ marginTop: 12, color: 'var(--color-success)', textAlign: 'center' }}>
+          ✓ 알림 활성화됨 · 매일 {alarm.time}에 알림
+        </p>
+      )}
 
       {/* 저장 완료 토스트 */}
       {showToast && (
