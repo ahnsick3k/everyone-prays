@@ -270,21 +270,40 @@ export default function HomePage() {
             </span>
           </div>
           {alarm && (
-            <input
-              type="time"
-              value={alarm.time}
-              onChange={(e) => handleAlarmTimeChange(e.target.value)}
-              style={{
-                display: 'block',
-                marginTop: 8,
-                border: '1px solid var(--color-border)',
-                borderRadius: 'var(--radius-sm)',
-                padding: '6px 12px',
-                fontSize: 14,
-                color: 'var(--color-text-body)',
-                background: 'transparent',
-              }}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+              <input
+                type="time"
+                value={alarm.time}
+                onChange={(e) => handleAlarmTimeChange(e.target.value)}
+                style={{
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '6px 12px',
+                  fontSize: 14,
+                  color: 'var(--color-text-body)',
+                  background: 'transparent',
+                }}
+              />
+              <button
+                onClick={() => {
+                  const now = new Date();
+                  const t = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                  handleAlarmTimeChange(t);
+                }}
+                style={{
+                  padding: '6px 10px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--color-border)',
+                  background: 'transparent',
+                  fontSize: 12,
+                  color: 'var(--color-text-muted)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                현재시각
+              </button>
+            </div>
           )}
         </div>
         {/* Toggle */}
