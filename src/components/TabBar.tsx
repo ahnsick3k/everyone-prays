@@ -17,10 +17,9 @@ export default function TabBar() {
       style={{
         position: 'fixed',
         bottom: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
+        left: 0,
+        right: 0,
         width: '100%',
-        maxWidth: 430,
         background: 'var(--color-surface-dark)',
         display: 'flex',
         height: 64,
