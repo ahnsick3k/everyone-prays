@@ -1,65 +1,306 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { db, type Prayer, type Alarm } from '@/lib/db';
+import { v4 as uuidv4 } from 'uuid';
+import { requestNotificationPermission, scheduleNotification, getNextAlarmDelay } from '@/lib/notification';
+
+export default function HomePage() {
+  const [name, setName] = useState('');
+  const [content, setContent] = useState('');
+  const [alarm, setAlarm] = useState<Alarm | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [recentNames, setRecentNames] = useState<string[]>([]);
+
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  });
+  const dateKey = today.toISOString().split('T')[0];
+
+  useEffect(() => {
+    loadAlarm();
+    loadRecentNames();
+  }, []);
+
+  async function loadAlarm() {
+    const alarms = await db.alarms.toArray();
+    if (alarms.length > 0) {
+      setAlarm(alarms[0]);
+      if (alarms[0].enabled) {
+        const delay = getNextAlarmDelay(alarms[0].time);
+        scheduleNotification('🙏 기도 시간', '오늘의 기도를 시작하세요', delay);
+      }
+    }
+  }
+
+  async function loadRecentNames() {
+    const prayers = await db.prayers.orderBy('createdAt').reverse().limit(20).toArray();
+    const names = [...new Set(prayers.map((p) => p.name))].slice(0, 5);
+    setRecentNames(names);
+  }
+
+  async function handleSave() {
+    if (!name.trim() || !content.trim()) return;
+
+    const prayer: Prayer = {
+      id: uuidv4(),
+      name: name.trim(),
+      content: content.trim(),
+      date: dateKey,
+      createdAt: Date.now(),
+    };
+
+    await db.prayers.add(prayer);
+    setContent('');
+    setShowToast(true);
+    loadRecentNames();
+    setTimeout(() => setShowToast(false), 2000);
+  }
+
+  async function handleAlarmToggle() {
+    if (!alarm) {
+      const newAlarm: Alarm = { id: uuidv4(), time: '06:00', enabled: true, repeat: true };
+      await db.alarms.add(newAlarm);
+      setAlarm(newAlarm);
+      await requestNotificationPermission();
+    } else {
+      const updated = { ...alarm, enabled: !alarm.enabled };
+      await db.alarms.put(updated);
+      setAlarm(updated);
+      if (updated.enabled) {
+        await requestNotificationPermission();
+        const delay = getNextAlarmDelay(updated.time);
+        scheduleNotification('🙏 기도 시간', '오늘의 기도를 시작하세요', delay);
+      }
+    }
+  }
+
+  async function handleAlarmTimeChange(time: string) {
+    if (!alarm) return;
+    const updated = { ...alarm, time };
+    await db.alarms.put(updated);
+    setAlarm(updated);
+    if (updated.enabled) {
+      const delay = getNextAlarmDelay(time);
+      scheduleNotification('🙏 기도 시간', '오늘의 기도를 시작하세요', delay);
+    }
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div style={{ padding: '48px 20px 32px' }}>
+      {/* 날짜 */}
+      <h1 className="text-display-xl" style={{ marginBottom: 48 }}>
+        {dateStr}
+      </h1>
+
+      {/* 이름 입력 */}
+      <div style={{ marginBottom: 24 }}>
+        <label className="text-caption" style={{ display: 'block', marginBottom: 8 }}>
+          기도 대상
+        </label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="이름을 입력하세요"
+          style={{
+            width: '100%',
+            height: 48,
+            padding: '14px 16px',
+            background: 'var(--color-surface-card)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'var(--radius-sm)',
+            fontSize: 15,
+            color: 'var(--color-text-body)',
+            outline: 'none',
+            transition: 'border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out)',
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = 'var(--color-interactive)';
+            e.target.style.boxShadow = '0 0 0 3px rgba(60,19,33,0.08)';
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = 'var(--color-border)';
+            e.target.style.boxShadow = 'none';
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        {recentNames.length > 0 && !name && (
+          <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+            {recentNames.map((n) => (
+              <button
+                key={n}
+                onClick={() => setName(n)}
+                style={{
+                  padding: '4px 12px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'rgba(60,19,33,0.05)',
+                  border: 'none',
+                  fontSize: 13,
+                  color: 'var(--color-text-body)',
+                  cursor: 'pointer',
+                }}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 기도문 입력 */}
+      <div style={{ marginBottom: 24 }}>
+        <label className="text-caption" style={{ display: 'block', marginBottom: 8 }}>
+          기도문
+        </label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="오늘의 기도를 작성하세요..."
+          style={{
+            width: '100%',
+            minHeight: 120,
+            padding: '14px 16px',
+            background: 'var(--color-surface-card)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'var(--radius-sm)',
+            fontSize: 16,
+            lineHeight: 1.6,
+            color: 'var(--color-text-body)',
+            resize: 'vertical',
+            outline: 'none',
+            fontFamily: 'inherit',
+            transition: 'border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out)',
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = 'var(--color-interactive)';
+            e.target.style.boxShadow = '0 0 0 3px rgba(60,19,33,0.08)';
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = 'var(--color-border)';
+            e.target.style.boxShadow = 'none';
+          }}
+        />
+      </div>
+
+      {/* 저장 버튼 */}
+      <button
+        onClick={handleSave}
+        disabled={!name.trim() || !content.trim()}
+        style={{
+          width: '100%',
+          height: 48,
+          background: name.trim() && content.trim() ? 'var(--color-interactive)' : 'var(--color-interactive-disabled)',
+          color: 'var(--color-text-on-primary)',
+          border: 'none',
+          borderRadius: 'var(--radius-pill)',
+          fontSize: 15,
+          fontWeight: 600,
+          cursor: name.trim() && content.trim() ? 'pointer' : 'not-allowed',
+          transition: 'background var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out)',
+        }}
+        onMouseDown={(e) => { if (name.trim() && content.trim()) e.currentTarget.style.transform = 'scale(0.97)'; }}
+        onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+      >
+        저장하기
+      </button>
+
+      {/* 알람 섹션 */}
+      <div
+        style={{
+          marginTop: 48,
+          padding: 24,
+          background: 'var(--color-surface-card)',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--color-border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+            <span style={{ fontSize: 20 }}>🔔</span>
+            <span className="text-title-lg">
+              {alarm ? alarm.time : '06:00'}
+            </span>
+          </div>
+          <span className="text-caption">매일 반복</span>
+          {alarm && (
+            <input
+              type="time"
+              value={alarm.time}
+              onChange={(e) => handleAlarmTimeChange(e.target.value)}
+              style={{
+                display: 'block',
+                marginTop: 8,
+                border: '1px solid var(--color-border)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '6px 12px',
+                fontSize: 14,
+                color: 'var(--color-text-body)',
+                background: 'transparent',
+              }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          )}
         </div>
-      </main>
+        {/* Toggle */}
+        <button
+          onClick={handleAlarmToggle}
+          style={{
+            width: 48,
+            height: 28,
+            borderRadius: 'var(--radius-pill)',
+            border: 'none',
+            background: alarm?.enabled ? 'var(--color-accent-gold)' : 'rgba(60,19,33,0.15)',
+            position: 'relative',
+            cursor: 'pointer',
+            transition: 'background var(--duration-base) var(--ease-spring)',
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              top: 2,
+              left: alarm?.enabled ? 22 : 2,
+              width: 24,
+              height: 24,
+              borderRadius: '50%',
+              background: '#FFF',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+              transition: 'left var(--duration-base) var(--ease-spring)',
+            }}
+          />
+        </button>
+      </div>
+
+      {/* 저장 완료 토스트 */}
+      {showToast && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 80,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'var(--color-interactive)',
+            color: 'var(--color-text-on-primary)',
+            padding: '14px 24px',
+            borderRadius: 'var(--radius-lg)',
+            fontSize: 15,
+            fontWeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            zIndex: 200,
+          }}
+        >
+          ✓ 기도가 저장되었습니다
+        </div>
+      )}
     </div>
   );
 }

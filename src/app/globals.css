@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primitive Tokens */
+  --brown-900: #3C1321;
+  --brown-700: #5C2E3E;
+  --brown-500: #7B4B5A;
+  --brown-300: #9B7A85;
+  --brown-100: rgba(60, 19, 33, 0.12);
+  --brown-50: rgba(60, 19, 33, 0.06);
+  --cream-50: #FFF9F5;
+  --cream-100: #FFF3EB;
+  --gold-500: #C8902E;
+  --gold-600: #A67425;
+  --white: #FFFFFF;
+  --success: #2E7D4F;
+  --error: #C4392D;
+
+  /* Alias/Semantic Tokens */
+  --color-interactive: var(--brown-900);
+  --color-interactive-hover: var(--brown-700);
+  --color-interactive-disabled: rgba(60, 19, 33, 0.4);
+  --color-bg: var(--cream-50);
+  --color-surface-card: var(--white);
+  --color-surface-dark: var(--brown-900);
+  --color-border: var(--brown-100);
+  --color-accent-gold: var(--gold-500);
+  --color-text-primary: var(--brown-900);
+  --color-text-body: var(--brown-700);
+  --color-text-muted: var(--brown-300);
+  --color-text-on-primary: var(--white);
+  --color-success: var(--success);
+  --color-error: var(--error);
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+  --space-section: 64px;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+  --radius-full: 50%;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-modal: 400ms;
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Shadow */
+  --shadow-subtle: 0 2px 8px rgba(60, 19, 33, 0.06);
+  --shadow-elevated: 0 4px 16px rgba(60, 19, 33, 0.12);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text-primary);
+  --font-sans: 'Flex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  padding-bottom: 80px;
+}
+
+/* Utility classes */
+.text-display-xl {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.text-display-lg {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.text-title-lg {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.text-title-md {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+}
+
+.text-body-lg {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-body);
+}
+
+.text-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-body);
+}
+
+.text-caption {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.text-nav {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.0;
+  letter-spacing: 0.03em;
 }
