@@ -269,7 +269,6 @@ export default function HomePage() {
               {alarm ? alarm.time : '06:00'}
             </span>
           </div>
-          <span className="text-caption">매일 반복</span>
           {alarm && (
             <input
               type="time"

@@ -23,8 +23,6 @@ export default function TabBar() {
         maxWidth: 430,
         background: 'var(--color-surface-dark)',
         display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center',
         height: 64,
         paddingBottom: 'env(safe-area-inset-bottom)',
         zIndex: 100,
@@ -37,30 +35,18 @@ export default function TabBar() {
             key={tab.href}
             href={tab.href}
             style={{
+              flex: 1,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: 4,
               color: isActive ? 'var(--color-text-on-primary)' : 'rgba(255,255,255,0.6)',
               textDecoration: 'none',
-              position: 'relative',
-              padding: '8px 16px',
+              background: isActive ? 'rgba(255,255,255,0.12)' : 'transparent',
+              transition: 'background var(--duration-fast) var(--ease-out)',
             }}
           >
-            {isActive && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: 24,
-                  height: 2,
-                  background: 'var(--color-accent-gold)',
-                  borderRadius: 1,
-                }}
-              />
-            )}
             <tab.icon filled={isActive} />
             <span className="text-nav">{tab.label}</span>
           </Link>
