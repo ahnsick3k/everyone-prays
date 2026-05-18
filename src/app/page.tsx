@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { db, type Prayer, type Alarm } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import { requestNotificationPermission, scheduleNotification, getNextAlarmDelay } from '@/lib/notification';
+import { requestNotificationPermission, notifyServiceWorker } from '@/lib/notification';
 
 export default function HomePage() {
   const [name, setName] = useState('');
@@ -31,8 +31,8 @@ export default function HomePage() {
     if (alarms.length > 0) {
       setAlarm(alarms[0]);
       if (alarms[0].enabled) {
-        const delay = getNextAlarmDelay(alarms[0].time);
-        scheduleNotification('🙏 기도 시간', '오늘의 기도를 시작하세요', delay);
+        // SW handles alarm checking
+        notifyServiceWorker('START_ALARM');
       }
     }
   }
@@ -73,8 +73,8 @@ export default function HomePage() {
       setAlarm(updated);
       if (updated.enabled) {
         await requestNotificationPermission();
-        const delay = getNextAlarmDelay(updated.time);
-        scheduleNotification('🙏 기도 시간', '오늘의 기도를 시작하세요', delay);
+        
+        notifyServiceWorker('START_ALARM');
       }
     }
   }
@@ -85,8 +85,8 @@ export default function HomePage() {
     await db.alarms.put(updated);
     setAlarm(updated);
     if (updated.enabled) {
-      const delay = getNextAlarmDelay(time);
-      scheduleNotification('🙏 기도 시간', '오늘의 기도를 시작하세요', delay);
+      
+      notifyServiceWorker('START_ALARM');
     }
   }
 

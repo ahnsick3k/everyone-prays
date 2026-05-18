@@ -7,12 +7,12 @@ export async function requestNotificationPermission(): Promise<boolean> {
   return permission === 'granted';
 }
 
-export function scheduleNotification(title: string, body: string, delay: number) {
-  setTimeout(() => {
-    if (Notification.permission === 'granted') {
-      new Notification(title, { body, icon: '/icon-192.png' });
-    }
-  }, delay);
+export function notifyServiceWorker(message: string) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then((reg) => {
+      reg.active?.postMessage(message);
+    });
+  }
 }
 
 export function getNextAlarmDelay(time: string): number {

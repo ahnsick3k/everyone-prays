@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import TabBar from "@/components/TabBar";
+import InstallPrompt from "@/components/InstallPrompt";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -18,6 +20,10 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: "everyone-prays",
+  },
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -37,6 +43,8 @@ export default function RootLayout({
   return (
     <html lang="ko" className={sourceSerif.variable}>
       <body>
+        <ServiceWorkerRegister />
+        <InstallPrompt />
         <main>{children}</main>
         <TabBar />
       </body>
