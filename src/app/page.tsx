@@ -30,6 +30,36 @@ export default function HomePage() {
     }
   }, []);
 
+  // Client-side alarm checker - runs every 30s while app is open
+  useEffect(() => {
+    if (!alarm?.enabled) return;
+
+    let lastFired = '';
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      if (alarm.time === currentTime && lastFired !== currentTime) {
+        lastFired = currentTime;
+        // Fire notification directly from client
+        if (Notification.permission === 'granted') {
+          navigator.serviceWorker?.ready.then((reg) => {
+            reg.showNotification('🙏 기도 시간입니다', {
+              body: '오늘의 기도를 시작하세요',
+              icon: '/icon-192.png',
+              tag: 'prayer-alarm',
+              requireInteraction: true,
+              vibrate: [200, 100, 200, 100, 200],
+            });
+          });
+        }
+      }
+    }, 10000); // check every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [alarm?.enabled, alarm?.time]);
+
   async function loadAlarm() {
     const alarms = await db.alarms.toArray();
     if (alarms.length > 0) {
@@ -296,9 +326,35 @@ export default function HomePage() {
         </p>
       )}
       {notifPermission === 'granted' && alarm?.enabled && (
-        <p className="text-caption" style={{ marginTop: 12, color: 'var(--color-success)', textAlign: 'center' }}>
-          ✓ 알림 활성화됨 · 매일 {alarm.time}에 알림
-        </p>
+        <div style={{ marginTop: 12, textAlign: 'center' }}>
+          <p className="text-caption" style={{ color: 'var(--color-success)', marginBottom: 8 }}>
+            ✓ 알림 활성화됨 · 매일 {alarm.time}에 알림
+          </p>
+          <button
+            onClick={async () => {
+              const reg = await navigator.serviceWorker?.ready;
+              if (reg) {
+                await reg.showNotification('🙏 테스트 알림', {
+                  body: '알림이 정상 작동합니다!',
+                  icon: '/icon-192.png',
+                  tag: 'test-alarm',
+                  vibrate: [200, 100, 200],
+                });
+              }
+            }}
+            style={{
+              padding: '6px 16px',
+              borderRadius: 'var(--radius-pill)',
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              fontSize: 12,
+              color: 'var(--color-text-muted)',
+              cursor: 'pointer',
+            }}
+          >
+            🔔 테스트 알림 보내기
+          </button>
+        </div>
       )}
 
       {/* 저장 완료 토스트 */}
