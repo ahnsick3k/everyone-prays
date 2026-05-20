@@ -22,7 +22,7 @@ export default function TabBar() {
         width: '100%',
         background: 'var(--color-surface-dark)',
         display: 'flex',
-        height: 64,
+        height: 84,
         paddingBottom: 'env(safe-area-inset-bottom)',
         zIndex: 100,
       }}
