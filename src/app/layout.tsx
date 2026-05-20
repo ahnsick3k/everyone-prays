@@ -1,16 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import TabBar from "@/components/TabBar";
 import InstallPrompt from "@/components/InstallPrompt";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["900"],
-  variable: "--font-serif",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "everyone-prays",
@@ -41,7 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={sourceSerif.variable}>
+    <html lang="ko">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css"
+        />
+      </head>
       <body>
         <ServiceWorkerRegister />
         <InstallPrompt />
@@ -51,4 +49,3 @@ export default function RootLayout({
     </html>
   );
 }
-
