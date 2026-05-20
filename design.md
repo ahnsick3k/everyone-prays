@@ -79,7 +79,7 @@ everyone-prays는 Hershey의 "moments of goodness" 철학에서 영감을 받은
 **Key Characteristics:**
 - 초콜릿 브라운(#3C1321) 단일 액센트 — 모든 CTA, 링크, 포커스 링에 사용
 - 크림(#FFF9F5) + 화이트(#FFFFFF) 투톤 서피스 — 따뜻한 종이 위 카드 레이아웃
-- Gazpacho 디스플레이 폰트(날짜 표시) + TT Norms Pro 바디(UI 전반) — Hershey 공식 서체 구성
+- SF Pro Display 디스플레이 폰트(날짜 표시) + Pretendard 바디(UI 전반)
 - 부드러운 라운드 코너(12px 카드, pill 버튼) — 초콜릿 바의 부드러운 곡선에서 영감
 - 그림자 최소화, 색상 변화로 깊이 표현 — flat + hairline border 시스템
 - 8px 베이스 유닛, 관대한 여백 — 기도에 집중하는 여유로운 호흡감
@@ -137,41 +137,35 @@ everyone-prays는 Hershey의 "moments of goodness" 철학에서 영감을 받은
 
 ### Font Family
 
-- **Gazpacho**: `'Gazpacho', Georgia, serif` — Display/헤드라인 폰트. Hershey 공식 사이트에서 사용하는 프로프라이어티 디스플레이 세리프. 둥글고 따뜻한 글자 형태가 초콜릿의 부드러움을 연상. 날짜 표시와 대형 숫자에 사용.
-- **TT Norms Pro**: `'TT Norms Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` — Body/UI 폰트. Hershey 공식 사이트의 본문 산세리프. 높은 가독성과 중립적 톤으로 기도문 가독성 확보.
-- **한글**: `'Pretendard', 'Apple SD Gothic Neo', sans-serif` — 한글 UI 및 기도문 본문. Pretendard가 TT Norms Pro의 x-height와 자간 비율에 가장 근접.
+- **SF Pro Display**: `'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif` — Display/헤드라인 폰트. Apple 시스템 디스플레이 서체로 날짜 표시와 대형 숫자에 사용. 세련되고 모던한 인상.
+- **Pretendard**: `'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` — Body/UI 폰트. 한글·영문 모두 높은 가독성과 중립적 톤으로 기도문 가독성 확보. 모든 UI 텍스트의 기본 서체.
 
 ### Hierarchy
 
 | Token | Font | Size | Weight | Line Height | Letter Spacing | Use |
 |---|---|---|---|---|---|---|
-| `{typography.display-xl}` | Gazpacho | 36px (2.25rem) | 900 (Black) | 1.1 | -0.02em | 홈 화면 오늘 날짜 |
-| `{typography.display-lg}` | Gazpacho | 28px (1.75rem) | 900 | 1.2 | -0.01em | 캘린더 월 표시 |
-| `{typography.title-lg}` | TT Norms Pro | 20px (1.25rem) | 700 | 1.3 | 0 | 탭 제목, 섹션 헤드라인 |
-| `{typography.title-md}` | TT Norms Pro | 17px (1.0625rem) | 600 | 1.4 | 0 | 카드 제목, 이름 표시 |
-| `{typography.body-lg}` | TT Norms Pro | 16px (1rem) | 400 | 1.6 | 0 | 기도문 본문 |
-| `{typography.body}` | TT Norms Pro | 15px (0.9375rem) | 400 | 1.5 | 0 | UI 텍스트, 설명문 |
-| `{typography.body-sm}` | TT Norms Pro | 13px (0.8125rem) | 400 | 1.5 | 0 | 보조 정보 |
-| `{typography.button}` | TT Norms Pro | 15px (0.9375rem) | 600 | 1.0 | 0.01em | 버튼 레이블 |
-| `{typography.caption}` | TT Norms Pro | 12px (0.75rem) | 500 | 1.4 | 0.02em | 캡션, 시간 표시, 메타 |
-| `{typography.nav-link}` | TT Norms Pro | 11px (0.6875rem) | 500 | 1.0 | 0.03em | 하단 탭 레이블 |
+| `{typography.display-xl}` | SF Pro Display | 36px (2.25rem) | 700 (Bold) | 1.1 | -0.02em | 홈 화면 오늘 날짜 |
+| `{typography.display-lg}` | SF Pro Display | 28px (1.75rem) | 700 | 1.2 | -0.01em | 캘린더 월 표시 |
+| `{typography.title-lg}` | Pretendard | 20px (1.25rem) | 700 | 1.3 | 0 | 탭 제목, 섹션 헤드라인 |
+| `{typography.title-md}` | Pretendard | 17px (1.0625rem) | 600 | 1.4 | 0 | 카드 제목, 이름 표시 |
+| `{typography.body-lg}` | Pretendard | 16px (1rem) | 400 | 1.6 | 0 | 기도문 본문 |
+| `{typography.body}` | Pretendard | 15px (0.9375rem) | 400 | 1.5 | 0 | UI 텍스트, 설명문 |
+| `{typography.body-sm}` | Pretendard | 13px (0.8125rem) | 400 | 1.5 | 0 | 보조 정보 |
+| `{typography.button}` | Pretendard | 15px (0.9375rem) | 600 | 1.0 | 0.01em | 버튼 레이블 |
+| `{typography.caption}` | Pretendard | 12px (0.75rem) | 500 | 1.4 | 0.02em | 캡션, 시간 표시, 메타 |
+| `{typography.nav-link}` | Pretendard | 11px (0.6875rem) | 500 | 1.0 | 0.03em | 하단 탭 레이블 |
 
 ### Principles
 
-- **Display는 Gazpacho, UI는 TT Norms Pro**: 날짜와 숫자에만 Gazpacho를 사용하여 시각적 위계를 형성. 기도문 본문은 반드시 TT Norms Pro로 — 가독성이 최우선.
-- **Weight 제한**: 400(본문), 500(캡션/내비), 600(제목/버튼), 700(섹션 헤드라인), 900(Gazpacho Display only). 다른 weight 사용 금지.
+- **Display는 SF Pro Display, UI는 Pretendard**: 날짜와 숫자에만 SF Pro Display를 사용하여 시각적 위계를 형성. 기도문 본문은 반드시 Pretendard로 — 가독성이 최우선.
+- **Weight 제한**: 400(본문), 500(캡션/내비), 600(제목/버튼), 700(헤드라인/Display). 다른 weight 사용 금지.
 - **Line-height 패턴**: Display(1.1~1.2)는 타이트, Body(1.5~1.6)는 넉넉하게. 기도문은 1.6으로 읽기 편한 호흡 확보.
 - **Letter-spacing**: Display는 음수(-0.02em), Body는 0, Caption/Nav는 양수(+0.02~0.03em). 크기가 작을수록 자간을 벌려 가독성 확보.
 
-### Note on Font Substitutes
+### Note on Fonts
 
-Gazpacho는 프로프라이어티 폰트(Hershey 라이선스). 대체 폰트:
-- **Recoleta** (가장 유사한 둥근 세리프 분위기) — letter-spacing: 0, line-height +0.05 조정
-- **Georgia Bold** (시스템 폴백) — letter-spacing: -0.01em
-
-TT Norms Pro는 프로프라이어티 폰트. 대체 폰트:
-- **Inter** (가장 유사한 기하학적 산세리프) — 별도 조정 불필요
-- **SF Pro Display** (Apple 기기 기본) — 시스템 폰트 스택으로 자동 적용
+- **SF Pro Display**: Apple 기기에서 시스템 폰트로 자동 적용. 비Apple 환경에서는 `-apple-system, BlinkMacSystemFont, 'Segoe UI'` 폴백.
+- **Pretendard**: 웹폰트로 제공 (CDN: `https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css`). 한글·영문 동일한 시각적 밸런스 제공.
 
 ---
 
@@ -365,7 +359,7 @@ everyone-prays의 여백은 **기도의 여유와 집중을 위한 무대**이�
 ### Calendar
 
 **`calendar`** — 월간 달력 뷰.
-- Background: `{colors.canvas}` (#FFF9F5), 헤더는 월 표시(`{typography.display-lg}` Gazpacho).
+- Background: `{colors.canvas}` (#FFF9F5), 헤더는 월 표시(`{typography.display-lg}` SF Pro Display).
 - 요일 헤더: `{typography.caption}`, `{colors.muted}`.
 - 날짜 셀: 40×40px, `{rounded.full}`, `{typography.body}`.
 - **기도 기록 있는 날짜 마커**: 셀 하단 중앙 6px 원형 dot, `{colors.accent-gold}` (#C8902E).
@@ -399,7 +393,7 @@ everyone-prays의 여백은 **기도의 여유와 집중을 위한 무대**이�
 ### Do
 
 - `{colors.primary}` (#3C1321)를 모든 인터랙티브 요소에 사용 — 버튼, 링크, 포커스 링, 활성 캘린더 셀 모두 단일 액센트
-- 헤드라인/날짜에만 Gazpacho, 나머지 전부 TT Norms Pro — 폰트 역할 경계를 엄격히 유지
+- 헤드라인/날짜에만 SF Pro Display, 나머지 전부 Pretendard — 폰트 역할 경계를 엄격히 유지
 - 모든 Primary 버튼을 `{rounded.pill}` 형태로 — pill이 이 앱의 액션 신호
 - `scale(0.97)`을 모든 버튼 active 상태에 — 터치 피드백의 일관된 micro-interaction
 - 크림(#FFF9F5) + 화이트(#FFF) 서피스 교번으로 시각적 계층 표현 — 그림자 대신 색상 차이
@@ -409,7 +403,7 @@ everyone-prays의 여백은 **기도의 여유와 집중을 위한 무대**이�
 
 - 두 번째 인터랙티브 액센트 색상 추가 금지 — 모든 클릭 신호는 `{colors.primary}` 하나
 - 카드/버튼에 드롭 섀도 사용 금지 — 깊이는 서피스 색상 차이로만 표현 (모달 제외)
-- 기도문 본문에 Gazpacho 사용 금지 — Display 폰트는 날짜/숫자 전용
+- 기도문 본문에 SF Pro Display 사용 금지 — Display 폰트는 날짜/숫자 전용
 - Body 텍스트에 weight 700 사용 금지 — 본문은 400, 강조는 600까지만
 - 순수 검정(#000000) 사용 금지 — 텍스트는 항상 브라운 톤 `{colors.ink}` 또는 `{colors.body}`
 - 골드를 버튼이나 링크에 사용 금지 — 골드는 상태 표시(마커/배지) 전용, 인터랙티브 요소에는 브라운만
@@ -468,9 +462,9 @@ The structural breakpoint that matters most: 430px (모바일 앱 최대 너비)
 
 ### Example Component Prompts
 
-- "**홈 화면 날짜**: 배경 #FFF9F5, Gazpacho 36px/900/LH1.1/-0.02em/#3C1321, 상하 패딩 48px"
+- "**홈 화면 날짜**: 배경 #FFF9F5, SF Pro Display 36px/700/LH1.1/-0.02em/#3C1321, 상하 패딩 48px"
 - "**저장 버튼**: 배경 #3C1321, 텍스트 #FFF/15px/600, pill radius, 패딩 14px×24px, 높이 48px, active시 scale(0.97)"
-- "**기도 기록 카드**: 배경 #FFF, border 1px rgba(60,19,33,0.12), radius 12px, 패딩 24px, 이름 TT Norms 17px/600/#3C1321, 본문 16px/400/#5C2E3E"
+- "**기도 기록 카드**: 배경 #FFF, border 1px rgba(60,19,33,0.12), radius 12px, 패딩 24px, 이름 Pretendard 17px/600/#3C1321, 본문 16px/400/#5C2E3E"
 - "**하단 탭 바**: 배경 #3C1321, 높이 64px+safe area, 아이콘 24px outline/#FFF60%, 활성 filled/#FFF + 상단 2px gold bar"
 - "**캘린더 날짜 셀**: 40×40px 원형, 기본 #5C2E3E/15px, 선택시 배경 #3C1321 텍스트 #FFF, 기록있는 날 하단 6px gold dot"
 - "**토글 스위치**: 48×28px pill, OFF rgba(60,19,33,0.15), ON #C8902E, thumb #FFF 24px, spring easing"
@@ -490,8 +484,8 @@ The structural breakpoint that matters most: 430px (모바일 앱 최대 너비)
 ## Known Gaps
 
 - Hershey 공식 사이트의 정확한 hex 값은 Figma/스타일가이드 접근 없이 추정값 — `{colors.primary}` #3C1321은 시각적 추정
-- Gazpacho 폰트의 정확한 weight axis 범위 미확인 — Black(900)만 확인됨
-- TT Norms Pro의 한글 지원 여부 미확인 — 한글은 Pretendard로 대체 전제
+- SF Pro Display 폰트의 정확한 weight axis 범위 미확인 — Black(900)만 확인됨
+- Pretendard의 한글 지원 여부 미확인 — 한글은 Pretendard로 대체 전제
 - Form validation / error 상태의 구체적 인터랙션(shake, inline message 등)은 미정의
 - PWA 설치 배너, 오프라인 상태 UI는 별도 디자인 필요
 - 캘린더 스와이프(월 전환) 애니메이션 상세 미정의
