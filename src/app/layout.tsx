@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import TabBar from "@/components/TabBar";
-import InstallPrompt from "@/components/InstallPrompt";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import DesktopSidebar from "@/components/DesktopSidebar";
 
@@ -47,7 +46,6 @@ export default function RootLayout({
             <div className="device-notch" />
             <div className="device-screen">
               <ServiceWorkerRegister />
-              <InstallPrompt />
               <main>{children}</main>
               <TabBar />
             </div>

@@ -104,9 +104,11 @@ body {
 
 @media (min-width: 768px) {
   body {
-    background: #1a1a2e;
+    background: var(--brown-900);
     padding: 0;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
     overflow: auto;
   }
@@ -115,12 +117,9 @@ body {
     max-width: none;
     margin: 0;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    gap: 48px;
-    padding-top: 100px;
-    padding-bottom: 60px;
-    min-height: 100vh;
+    gap: 64px;
   }
 
   .device-frame {
@@ -174,7 +173,6 @@ body {
   .desktop-sidebar {
     display: block;
     flex-shrink: 0;
-    padding-top: 80px;
   }
 
   .sidebar-content {
@@ -183,30 +181,32 @@ body {
 
   .sidebar-title {
     font-family: var(--font-display);
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 36px;
+    font-weight: 800;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
   }
 
   .sidebar-desc {
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 32px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 40px;
   }
 
   .sidebar-buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
   }
 
   .sidebar-btn {
     display: block;
-    width: 200px;
-    padding: 14px 24px;
+    width: 280px;
+    padding: 18px 32px;
     border-radius: var(--radius-pill);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     text-align: center;
     text-decoration: none;
@@ -219,24 +219,24 @@ body {
     transform: scale(0.97);
   }
 
-  .sidebar-btn-outline {
-    background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
-  }
-
-  .sidebar-btn-outline:hover {
-    border-color: rgba(255, 255, 255, 0.6);
-  }
-
   .sidebar-btn-primary {
-    background: var(--color-accent-gold);
+    background: var(--cream-50);
     border: none;
-    color: #fff;
+    color: var(--brown-900);
   }
 
   .sidebar-btn-primary:hover {
     opacity: 0.9;
+  }
+
+  .sidebar-btn-outline {
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+  }
+
+  .sidebar-btn-outline:hover {
+    border-color: rgba(255, 255, 255, 0.7);
   }
 }
 

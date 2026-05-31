@@ -40,21 +40,22 @@ export default function DesktopSidebar() {
     setDeferredPrompt(null);
   }
 
-  if (isInstalled) return null;
-
   return (
     <aside className="desktop-sidebar">
       <div className="sidebar-content">
-        <h1 className="sidebar-title">everyone-prays</h1>
-        <p className="sidebar-desc">개인용 기도 기록 &amp; 알람 앱</p>
+        <h1 className="sidebar-title">EVERY 1 PRAY</h1>
+        <p className="sidebar-desc">
+          오늘은 기도하셨나요?<br />
+          생각나는 그 사람을 위한 하루 1번의 중보
+        </p>
 
         <div className="sidebar-buttons">
-          <a href="/install" className="sidebar-btn sidebar-btn-outline">
-            설치 안내
-          </a>
           <button onClick={handleInstall} className="sidebar-btn sidebar-btn-primary">
-            📲 앱 설치하기
+            설치 안내
           </button>
+          <a href="/about" className="sidebar-btn sidebar-btn-outline">
+            EVERY 1 PRAY 소개
+          </a>
         </div>
       </div>
     </aside>
