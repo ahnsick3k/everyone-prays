@@ -41,10 +41,15 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ServiceWorkerRegister />
-        <InstallPrompt />
-        <main>{children}</main>
-        <TabBar />
+        <div className="device-frame">
+          <div className="device-notch" />
+          <div className="device-screen">
+            <ServiceWorkerRegister />
+            <InstallPrompt />
+            <main>{children}</main>
+            <TabBar />
+          </div>
+        </div>
       </body>
     </html>
   );

@@ -76,10 +76,73 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 430px;
-  margin: 0 auto;
   min-height: 100dvh;
   padding-bottom: 80px;
+}
+
+/* ─── Phone Frame (Desktop Only) ─── */
+.device-frame {
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.device-notch {
+  display: none;
+}
+
+.device-screen {
+  padding-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+  body {
+    background: #1a1a2e;
+    padding: 40px 20px;
+    padding-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .device-frame {
+    width: 393px;
+    max-width: 393px;
+    height: 852px;
+    border-radius: 55px;
+    border: 12px solid #1c1c1e;
+    box-shadow:
+      0 0 0 2px #3a3a3c,
+      0 30px 60px rgba(0, 0, 0, 0.5),
+      inset 0 0 4px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    position: relative;
+    background: var(--color-bg);
+    flex-shrink: 0;
+  }
+
+  .device-notch {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 126px;
+    height: 34px;
+    background: #1c1c1e;
+    border-radius: 0 0 20px 20px;
+    z-index: 100;
+  }
+
+  .device-screen {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0;
+  }
 }
 
 /* Utility classes */
