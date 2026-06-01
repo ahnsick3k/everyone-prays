@@ -57,6 +57,11 @@ export default function DesktopSidebar() {
             EVERY 1 PRAY 소개
           </a>
         </div>
+
+        <p className="sidebar-footer">
+          © 2026 HUG CENTER. ALL RIGHTS RESERVED.<br />
+          EVERY 1 PRAY · 생각나는 그 사람을 위한 하루 1번의 중보기도
+        </p>
       </div>
     </aside>
   );

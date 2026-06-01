@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Zen Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/zenserif/ZenSerif-Regular.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/gh/webfontworld/zenserif/ZenSerif-Regular.woff') format('woff');
+  font-display: swap;
+}
+
 :root {
   /* Primitive Tokens */
   --brown-900: #3C1321;
@@ -239,6 +248,13 @@ body {
 
   .sidebar-btn-outline:hover {
     border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .sidebar-footer {
+    margin-top: 48px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.35);
   }
 }
 
