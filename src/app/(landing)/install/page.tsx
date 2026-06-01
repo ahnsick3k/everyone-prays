@@ -125,8 +125,8 @@ export default function InstallPage() {
                     {step.hasShareIcon && <span className="landing-inline-icon"><ArrowUpOnSquareIcon style={{ width: 16, height: 16 }} /></span>}
                     {step.hasPlusIcon && <span className="landing-inline-icon"><PlusCircleIcon style={{ width: 16, height: 16 }} /></span>}
                     {' '}{step.desc}
+                    {step.done && <CheckCircleIcon className="landing-step-done-icon" />}
                   </p>
-                  {step.done && <CheckCircleIcon className="landing-step-done-icon" />}
                 </div>
               </div>
             ))}
@@ -151,8 +151,8 @@ export default function InstallPage() {
                   <p>
                     {step.hasMenuIcon && <span className="landing-inline-icon"><EllipsisVerticalIcon style={{ width: 16, height: 16 }} /></span>}
                     {' '}{step.desc}
+                    {step.done && <CheckCircleIcon className="landing-step-done-icon" />}
                   </p>
-                  {step.done && <CheckCircleIcon className="landing-step-done-icon" />}
                 </div>
               </div>
             ))}

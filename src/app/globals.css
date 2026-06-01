@@ -623,10 +623,12 @@ body {
 }
 
 .landing-step-done-icon {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   color: var(--color-success);
-  margin-top: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 6px;
 }
 
 /* Landing FAQ */
@@ -773,6 +775,11 @@ body {
   transform: scale(0.97);
 }
 
+[data-theme="dark"] .landing-cta-btn {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
 .landing-cta-btn-outline {
   display: inline-block;
   padding: 16px 40px;
@@ -788,6 +795,15 @@ body {
 
 .landing-cta-btn-outline:hover {
   border-color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .landing-cta-btn-outline {
+  color: var(--color-bg);
+  border-color: rgba(245, 230, 208, 0.4);
+}
+
+[data-theme="dark"] .landing-cta-btn-outline:hover {
+  border-color: rgba(245, 230, 208, 0.7);
 }
 
 /* Landing Footer */
