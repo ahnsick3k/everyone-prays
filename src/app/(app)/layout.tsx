@@ -10,13 +10,13 @@ export default function AppLayout({
 }>) {
   return (
     <div className="desktop-layout">
+      <div className="page-topbar">
+        <GlobalToggle />
+      </div>
       <div className="device-frame">
         <div className="device-notch" />
         <div className="device-screen">
           <ServiceWorkerRegister />
-          <div className="app-topbar">
-            <GlobalToggle />
-          </div>
           <main>{children}</main>
           <TabBar />
         </div>
