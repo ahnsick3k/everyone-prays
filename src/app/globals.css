@@ -135,7 +135,7 @@ body {
       inset 0 0 4px rgba(255, 255, 255, 0.05);
     overflow: hidden;
     position: relative;
-    background: var(--color-surface-dark);
+    background: var(--color-bg);
     flex-shrink: 0;
   }
 
@@ -168,6 +168,7 @@ body {
     right: 0 !important;
     bottom: 0 !important;
     width: 100% !important;
+    border-radius: 0 0 43px 43px;
   }
 
   /* ─── Desktop Sidebar ─── */
