@@ -50,9 +50,9 @@ export default function DesktopSidebar() {
         </p>
 
         <div className="sidebar-buttons">
-          <button onClick={handleInstall} className="sidebar-btn sidebar-btn-primary">
+          <a href="/install" className="sidebar-btn sidebar-btn-primary">
             설치 안내
-          </button>
+          </a>
           <a href="/about" className="sidebar-btn sidebar-btn-outline">
             EVERY 1 PRAY 소개
           </a>

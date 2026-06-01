@@ -301,3 +301,224 @@ body {
   line-height: 1.0;
   letter-spacing: 0.03em;
 }
+
+/* ─── Static Pages (Install / About) ─── */
+.static-page {
+  padding: 32px 20px 120px;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+
+.back-link:hover {
+  color: var(--color-text-body);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text-body);
+  margin-bottom: 32px;
+}
+
+/* Install: auto-detect banner */
+.install-auto-detect {
+  background: var(--cream-100);
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 32px;
+}
+
+/* Install: sections */
+.install-section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 20px;
+}
+
+/* Install: step list */
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-interactive);
+  color: var(--color-text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-content strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.step-content p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-body);
+}
+
+.step-content em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.icon-badge {
+  display: inline-block;
+  background: rgba(60, 19, 33, 0.08);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Install: FAQ */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+
+.faq-item strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.faq-item p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-body);
+}
+
+/* About: cards */
+.about-section {
+  margin-bottom: 40px;
+}
+
+.about-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  margin-bottom: 12px;
+}
+
+.about-emoji {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.about-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.about-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-body);
+}
+
+.about-story {
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+}
+
+.about-story p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--color-text-body);
+  margin-bottom: 12px;
+}
+
+.about-story p:last-child {
+  margin-bottom: 0;
+}
+
+.about-story strong {
+  color: var(--color-text-primary);
+}
+
+.about-cta {
+  text-align: center;
+  padding: 20px 0 0;
+}
+
+.sidebar-btn-cta {
+  display: inline-block;
+  width: 100%;
+  padding: 18px 32px;
+  border-radius: var(--radius-pill);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--color-interactive);
+  color: var(--color-text-on-primary);
+  border: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.sidebar-btn-cta:hover {
+  opacity: 0.9;
+}
