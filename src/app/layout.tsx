@@ -1,17 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import TabBar from "@/components/TabBar";
-import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
-import DesktopSidebar from "@/components/DesktopSidebar";
 
 export const metadata: Metadata = {
-  title: "everyone-prays",
-  description: "개인용 기도 기록 & 알람 앱",
+  title: "EVERY 1 PRAY",
+  description: "생각나는 그 사람을 위한 하루 1번의 중보기도",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "everyone-prays",
+    title: "EVERY 1 PRAY",
   },
   icons: {
     icon: "/icon-192.png",
@@ -40,19 +37,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css"
         />
       </head>
-      <body>
-        <div className="desktop-layout">
-          <div className="device-frame">
-            <div className="device-notch" />
-            <div className="device-screen">
-              <ServiceWorkerRegister />
-              <main>{children}</main>
-              <TabBar />
-            </div>
-          </div>
-          <DesktopSidebar />
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
