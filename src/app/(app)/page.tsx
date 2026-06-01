@@ -4,8 +4,50 @@ import { useState, useEffect } from 'react';
 import { db, type Prayer, type Alarm } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import { requestNotificationPermission, notifyServiceWorker } from '@/lib/notification';
+import { useLang } from '@/contexts/LangContext';
+
+const t = {
+  ko: {
+    prayerTarget: '기도 대상',
+    namePlaceholder: '이름을 입력하세요',
+    prayerTitle: '기도문',
+    prayerPlaceholder: '오늘의 기도를 작성하세요...',
+    save: '저장하기',
+    currentTime: '현재시각',
+    noPermission: '⚠️ 알림 권한이 없습니다. 토글을 켜서 알림을 허용해주세요.',
+    alarmActive: (time: string) => `✓ 알림 활성화됨 · 매일 ${time}에 알림`,
+    testAlarm: '🔔 테스트 알림 보내기',
+    saved: '✓ 기도가 저장되었습니다',
+    permAlert: '알림 권한을 허용해주세요. 설정 > 알림에서 변경할 수 있습니다.',
+    notifTitle: '🙏 기도 시간입니다',
+    notifBody: '오늘의 기도를 시작하세요',
+    testTitle: '🙏 테스트 알림',
+    testBody: '알림이 정상 작동합니다!',
+    dateLocale: 'ko-KR' as const,
+  },
+  en: {
+    prayerTarget: 'Prayer for',
+    namePlaceholder: 'Enter a name',
+    prayerTitle: 'Prayer',
+    prayerPlaceholder: 'Write your prayer for today...',
+    save: 'Save',
+    currentTime: 'Now',
+    noPermission: '⚠️ Notification permission required. Turn on the toggle to allow.',
+    alarmActive: (time: string) => `✓ Alarm active · Daily at ${time}`,
+    testAlarm: '🔔 Send test notification',
+    saved: '✓ Prayer saved',
+    permAlert: 'Please allow notification permission in Settings > Notifications.',
+    notifTitle: '🙏 Time to pray',
+    notifBody: 'Start your prayer for today',
+    testTitle: '🙏 Test notification',
+    testBody: 'Notifications are working!',
+    dateLocale: 'en-US' as const,
+  },
+};
 
 export default function HomePage() {
+  const { lang } = useLang();
+  const s = t[lang];
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [alarm, setAlarm] = useState<Alarm | null>(null);
@@ -14,7 +56,7 @@ export default function HomePage() {
   const [notifPermission, setNotifPermission] = useState<string>('default');
 
   const today = new Date();
-  const dateStr = today.toLocaleDateString('ko-KR', {
+  const dateStr = today.toLocaleDateString(s.dateLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
