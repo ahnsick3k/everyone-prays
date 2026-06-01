@@ -1,6 +1,7 @@
 import TabBar from "@/components/TabBar";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import GlobalToggle from "@/components/GlobalToggle";
 
 export default function AppLayout({
   children,
@@ -13,6 +14,9 @@ export default function AppLayout({
         <div className="device-notch" />
         <div className="device-screen">
           <ServiceWorkerRegister />
+          <div className="app-topbar">
+            <GlobalToggle />
+          </div>
           <main>{children}</main>
           <TabBar />
         </div>

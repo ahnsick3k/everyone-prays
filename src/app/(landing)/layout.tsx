@@ -1,18 +1,29 @@
+'use client';
+
 import Link from 'next/link';
+import GlobalToggle from '@/components/GlobalToggle';
+import { useLang } from '@/contexts/LangContext';
 
 export default function LandingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { lang } = useLang();
+
   return (
     <div className="landing-root">
       <header className="landing-header">
         <div className="landing-header-inner">
           <Link href="/" className="landing-logo">EVERY 1 PRAY</Link>
           <nav className="landing-nav">
-            <Link href="/about" className="landing-nav-link">소개</Link>
-            <Link href="/install" className="landing-nav-link landing-nav-cta">설치하기</Link>
+            <GlobalToggle />
+            <Link href="/about" className="landing-nav-link">
+              {lang === 'ko' ? '소개' : 'About'}
+            </Link>
+            <Link href="/install" className="landing-nav-link landing-nav-cta">
+              {lang === 'ko' ? '설치하기' : 'Install'}
+            </Link>
           </nav>
         </div>
       </header>

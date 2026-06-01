@@ -4,8 +4,8 @@
   font-family: 'Zen Serif';
   font-style: normal;
   font-weight: 400;
-  src: url('https://cdn.jsdelivr.net/gh/webfontworld/zenserif/ZenSerif-Regular.woff2') format('woff2'),
-       url('https://cdn.jsdelivr.net/gh/webfontworld/zenserif/ZenSerif-Regular.woff') format('woff');
+  src: url('/fonts/ZenSerif-Regular.woff2') format('woff2'),
+       url('/fonts/ZenSerif-Regular.ttf') format('truetype');
   font-display: swap;
 }
 
@@ -72,6 +72,41 @@
   --shadow-elevated: 0 4px 16px rgba(60, 19, 33, 0.12);
 }
 
+/* ─── Dark Theme ─── */
+[data-theme="dark"] {
+  --brown-900: #F5E6D0;
+  --brown-700: #D4B896;
+  --brown-500: #A08A74;
+  --brown-300: #7A6A5A;
+  --brown-100: rgba(245, 230, 208, 0.12);
+  --brown-50: rgba(245, 230, 208, 0.06);
+  --cream-50: #1A1210;
+  --cream-100: #241A16;
+  --gold-500: #D4A03E;
+  --gold-600: #E0B44A;
+  --white: #2A201C;
+  --success: #4CAF6E;
+  --error: #EF6B5E;
+
+  --color-interactive: #F5E6D0;
+  --color-interactive-hover: #D4B896;
+  --color-interactive-disabled: rgba(245, 230, 208, 0.3);
+  --color-bg: #1A1210;
+  --color-surface-card: #2A201C;
+  --color-surface-dark: #100C0A;
+  --color-border: rgba(245, 230, 208, 0.1);
+  --color-accent-gold: #D4A03E;
+  --color-text-primary: #F5E6D0;
+  --color-text-body: #D4B896;
+  --color-text-muted: #7A6A5A;
+  --color-text-on-primary: #1A1210;
+  --color-success: #4CAF6E;
+  --color-error: #EF6B5E;
+
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
 @theme inline {
   --color-background: var(--color-bg);
   --color-foreground: var(--color-text-primary);
@@ -86,6 +121,49 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
+}
+
+/* ─── Global Toggle ─── */
+.global-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.global-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-body);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.global-toggle-btn:hover {
+  background: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.global-toggle-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* App topbar */
+.app-topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px 0;
+  position: relative;
+  z-index: 50;
 }
 
 /* ─── Phone Frame (Desktop Only) ─── */
@@ -187,14 +265,14 @@ body {
   }
 
   .sidebar-content {
-    color: #fff;
+    color: var(--color-text-on-primary);
   }
 
   .sidebar-title {
     font-family: var(--font-display);
     font-size: 36px;
     font-weight: 800;
-    color: #fff;
+    color: var(--color-text-on-primary);
     margin-bottom: 16px;
     letter-spacing: -0.01em;
   }
@@ -336,6 +414,10 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .landing-header {
+  background: rgba(26, 18, 16, 0.85);
 }
 
 .landing-header-inner {
@@ -637,8 +719,12 @@ body {
 .landing-cta-section {
   text-align: center;
   padding: 80px var(--space-lg);
-  background: var(--brown-900);
-  color: var(--white);
+  background: var(--color-surface-dark);
+  color: var(--color-text-on-primary);
+}
+
+[data-theme="dark"] .landing-cta-section {
+  background: #241A16;
 }
 
 .landing-cta-section h2 {
@@ -646,13 +732,18 @@ body {
   font-size: 28px;
   font-weight: 800;
   margin-bottom: var(--space-md);
+  color: inherit;
 }
 
 .landing-cta-section p {
   font-size: 16px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-muted);
   margin-bottom: var(--space-xl);
+}
+
+[data-theme="dark"] .landing-cta-section p {
+  color: var(--color-text-body);
 }
 
 .landing-cta-buttons {
@@ -665,8 +756,8 @@ body {
 .landing-cta-btn {
   display: inline-block;
   padding: 16px 40px;
-  background: var(--cream-50);
-  color: var(--brown-900);
+  background: var(--color-text-primary);
+  color: var(--color-bg);
   font-size: 16px;
   font-weight: 700;
   border-radius: var(--radius-pill);
@@ -687,30 +778,34 @@ body {
   display: inline-block;
   padding: 16px 40px;
   background: transparent;
-  color: var(--white);
+  color: var(--color-text-primary);
   font-size: 16px;
   font-weight: 600;
   border-radius: var(--radius-pill);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border: 1.5px solid var(--color-border);
   text-decoration: none;
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 .landing-cta-btn-outline:hover {
-  border-color: rgba(255, 255, 255, 0.7);
+  border-color: var(--color-text-muted);
 }
 
 /* Landing Footer */
 .landing-footer {
   text-align: center;
   padding: 32px var(--space-lg);
-  background: var(--brown-900);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-dark);
+  border-top: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .landing-footer {
+  background: #100C0A;
 }
 
 .landing-footer p {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--color-text-muted);
 }
 
 /* Landing responsive: single column on mobile */
