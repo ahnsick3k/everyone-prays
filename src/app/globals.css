@@ -10,7 +10,7 @@
 }
 
 :root {
-  /* Primitive Tokens */
+  /* ─── Primitive Tokens ─── */
   --brown-900: #3C1321;
   --brown-700: #5C2E3E;
   --brown-500: #7B4B5A;
@@ -25,10 +25,7 @@
   --success: #256B42;
   --error: #B5312A;
 
-  /* Alias/Semantic Tokens */
-  --color-interactive: var(--brown-900);
-  --color-interactive-hover: var(--brown-700);
-  --color-interactive-disabled: rgba(60, 19, 33, 0.4);
+  /* ─── Semantic Tokens (theme-responsive) ─── */
   --color-bg: var(--cream-50);
   --color-surface-card: var(--white);
   --color-surface-dark: var(--brown-900);
@@ -38,10 +35,41 @@
   --color-text-body: var(--brown-700);
   --color-text-muted: var(--brown-300);
   --color-text-on-primary: var(--white);
+  --color-interactive: var(--brown-900);
+  --color-interactive-hover: var(--brown-700);
+  --color-interactive-disabled: rgba(60, 19, 33, 0.4);
   --color-success: var(--success);
   --color-error: var(--error);
 
-  /* Spacing */
+  /* ─── Button Tokens (WCAG AA ≥ 4.5:1) ─── */
+  --btn-primary-bg: #3C1321;
+  --btn-primary-text: #FFFFFF;          /* 16.1:1 */
+  --btn-primary-hover: #5C2E3E;
+  --btn-secondary-bg: rgba(60, 19, 33, 0.08);
+  --btn-secondary-text: #3C1321;        /* 15.4:1 on cream */
+  --btn-secondary-hover: rgba(60, 19, 33, 0.14);
+  --btn-outline-text: #3C1321;          /* 15.4:1 on cream */
+  --btn-outline-border: rgba(60, 19, 33, 0.25);
+  --btn-outline-hover-border: #826068;
+  --btn-ghost-text: #5C2E3E;            /* 10.5:1 on cream */
+  --btn-ghost-hover-bg: rgba(60, 19, 33, 0.06);
+  --btn-danger-bg: #B5312A;
+  --btn-danger-text: #FFFFFF;           /* 5.9:1 */
+  --btn-disabled-bg: rgba(60, 19, 33, 0.08);
+  --btn-disabled-text: rgba(60, 19, 33, 0.35);
+
+  /* ─── Chrome Tokens (theme-INVARIANT: always dark) ─── */
+  --chrome-bg: #3C1321;
+  --chrome-text: #FFFFFF;               /* 16.1:1 on chrome-bg */
+  --chrome-text-muted: rgba(255, 255, 255, 0.7);  /* 7.7:1 */
+  --chrome-text-subtle: rgba(255, 255, 255, 0.5); /* ≥4.6:1 on chrome-bg */
+  --chrome-border: rgba(255, 255, 255, 0.4);
+  --chrome-btn-bg: #FFF9F5;
+  --chrome-btn-text: #3C1321;           /* 15.4:1 */
+  --chrome-btn-outline-border: rgba(255, 255, 255, 0.5);
+  --chrome-btn-outline-text: #FFFFFF;   /* 16.1:1 */
+
+  /* ─── Spacing ─── */
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
@@ -50,7 +78,7 @@
   --space-xxl: 48px;
   --space-section: 64px;
 
-  /* Radius */
+  /* ─── Radius ─── */
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -58,7 +86,7 @@
   --radius-pill: 9999px;
   --radius-full: 50%;
 
-  /* Motion */
+  /* ─── Motion ─── */
   --duration-fast: 120ms;
   --duration-base: 200ms;
   --duration-slow: 300ms;
@@ -67,7 +95,7 @@
   --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Shadow */
+  /* ─── Shadow ─── */
   --shadow-subtle: 0 2px 8px rgba(60, 19, 33, 0.06);
   --shadow-elevated: 0 4px 16px rgba(60, 19, 33, 0.12);
 }
@@ -100,8 +128,27 @@
   --color-text-body: #D4B896;
   --color-text-muted: #9B8A7E;
   --color-text-on-primary: #1A1210;
-  --color-success: #4CAF6E;
+  --color-success: #5BBF7A;
   --color-error: #EF6B5E;
+
+  /* Button tokens — dark */
+  --btn-primary-bg: #F5E6D0;
+  --btn-primary-text: #1A1210;          /* 15.0:1 */
+  --btn-primary-hover: #E8D5BD;
+  --btn-secondary-bg: rgba(245, 230, 208, 0.1);
+  --btn-secondary-text: #F5E6D0;       /* 15.0:1 on bg */
+  --btn-secondary-hover: rgba(245, 230, 208, 0.16);
+  --btn-outline-text: #F5E6D0;         /* 15.0:1 on bg */
+  --btn-outline-border: rgba(245, 230, 208, 0.25);
+  --btn-outline-hover-border: #9B8A7E;
+  --btn-ghost-text: #D4B896;           /* 9.8:1 on bg */
+  --btn-ghost-hover-bg: rgba(245, 230, 208, 0.08);
+  --btn-danger-bg: #EF6B5E;
+  --btn-danger-text: #1A1210;          /* 6.1:1 */
+  --btn-disabled-bg: rgba(245, 230, 208, 0.06);
+  --btn-disabled-text: rgba(245, 230, 208, 0.3);
+
+  /* Chrome tokens: UNCHANGED — always dark */
 
   --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.2);
   --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -202,7 +249,7 @@ body {
 
 @media (min-width: 768px) {
   body:has(.desktop-layout) {
-    background: var(--brown-900);
+    background: var(--chrome-bg);
     padding: 0;
     display: flex;
     align-items: center;
@@ -276,14 +323,14 @@ body {
   }
 
   .sidebar-content {
-    color: var(--color-text-on-primary);
+    color: var(--chrome-text);
   }
 
   .sidebar-title {
     font-family: var(--font-display);
     font-size: 36px;
     font-weight: 800;
-    color: var(--color-text-on-primary);
+    color: var(--chrome-text);
     margin-bottom: 16px;
     letter-spacing: -0.01em;
   }
@@ -291,7 +338,7 @@ body {
   .sidebar-desc {
     font-size: 15px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--chrome-text-muted);
     margin-bottom: 40px;
   }
 
@@ -320,9 +367,9 @@ body {
   }
 
   .sidebar-btn-primary {
-    background: var(--cream-50);
+    background: var(--chrome-btn-bg);
     border: none;
-    color: var(--brown-900);
+    color: var(--chrome-btn-text);
   }
 
   .sidebar-btn-primary:hover {
@@ -331,8 +378,8 @@ body {
 
   .sidebar-btn-outline {
     background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
-    color: #fff;
+    border: 1.5px solid var(--chrome-btn-outline-border);
+    color: var(--chrome-btn-outline-text);
   }
 
   .sidebar-btn-outline:hover {
@@ -343,7 +390,7 @@ body {
     margin-top: 48px;
     font-size: 11px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--chrome-text-subtle);
   }
 }
 
@@ -728,12 +775,12 @@ body {
   color: var(--color-text-primary);
 }
 
-/* Landing CTA Section */
+/* Landing CTA Section — always dark background */
 .landing-cta-section {
   text-align: center;
   padding: 80px var(--space-lg);
-  background: var(--color-surface-dark);
-  color: var(--color-text-on-primary);
+  background: var(--chrome-bg);
+  color: var(--chrome-text);
 }
 
 [data-theme="dark"] .landing-cta-section {
@@ -751,12 +798,26 @@ body {
 .landing-cta-section p {
   font-size: 16px;
   line-height: 1.6;
-  color: var(--color-text-muted);
+  color: var(--chrome-text-muted);
   margin-bottom: var(--space-xl);
 }
 
-[data-theme="dark"] .landing-cta-section p {
-  color: var(--color-text-body);
+.landing-cta-section .landing-cta-btn {
+  background: var(--chrome-btn-bg);
+  color: var(--chrome-btn-text);
+}
+
+.landing-cta-section .landing-cta-btn:hover {
+  background: #F0E3D3;
+}
+
+.landing-cta-section .landing-cta-btn-outline {
+  color: var(--chrome-btn-outline-text);
+  border-color: var(--chrome-btn-outline-border);
+}
+
+.landing-cta-section .landing-cta-btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .landing-cta-buttons {
@@ -769,8 +830,8 @@ body {
 .landing-cta-btn {
   display: inline-block;
   padding: 16px 40px;
-  background: var(--color-text-primary);
-  color: var(--color-bg);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   font-size: 16px;
   font-weight: 700;
   border-radius: var(--radius-pill);
@@ -780,54 +841,36 @@ body {
 }
 
 .landing-cta-btn:hover {
-  opacity: 0.9;
+  background: var(--btn-primary-hover);
 }
 
 .landing-cta-btn:active {
   transform: scale(0.97);
 }
 
-[data-theme="dark"] .landing-cta-btn {
-  background: #F5E6D0;
-  color: #1A1210;
-}
-
-[data-theme="dark"] .landing-cta-btn:hover {
-  background: #E8D5BD;
-}
-
 .landing-cta-btn-outline {
   display: inline-block;
   padding: 16px 40px;
   background: transparent;
-  color: var(--color-text-primary);
+  color: var(--btn-outline-text);
   font-size: 16px;
   font-weight: 600;
   border-radius: var(--radius-pill);
-  border: 1.5px solid var(--color-border);
+  border: 1.5px solid var(--btn-outline-border);
   text-decoration: none;
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 .landing-cta-btn-outline:hover {
-  border-color: var(--color-text-muted);
+  border-color: var(--btn-outline-hover-border);
 }
 
-[data-theme="dark"] .landing-cta-btn-outline {
-  color: #F5E6D0;
-  border-color: rgba(245, 230, 208, 0.5);
-}
-
-[data-theme="dark"] .landing-cta-btn-outline:hover {
-  border-color: rgba(245, 230, 208, 0.8);
-}
-
-/* Landing Footer */
+/* Landing Footer — always dark */
 .landing-footer {
   text-align: center;
   padding: 32px var(--space-lg);
-  background: var(--color-surface-dark);
-  border-top: 1px solid var(--color-border);
+  background: var(--chrome-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .landing-footer {
@@ -836,7 +879,7 @@ body {
 
 .landing-footer p {
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: var(--chrome-text-subtle);
 }
 
 /* Landing responsive: single column on mobile */
