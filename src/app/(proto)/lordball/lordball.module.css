@@ -1,0 +1,442 @@
+/* ─── LordBall (SayQ 주여볼) prayer interaction ─── */
+
+.root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  background: #2f0249;
+  font-family: 'Zen Serif', 'Pretendard', serif;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  overflow: hidden;
+  background: #2f0249;
+  transition: background 800ms ease;
+}
+
+/* intro phase has the dark maroon background */
+.stageIntro {
+  background: #371621;
+}
+
+/* full-screen magenta cross backdrop during the climax */
+.stageBurst {
+  background: #14000f;
+}
+
+/* ─── Title ─── */
+.title {
+  position: absolute;
+  top: 68px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  z-index: 30;
+  transition: opacity 700ms ease;
+  pointer-events: none;
+}
+
+.titleHidden {
+  opacity: 0;
+}
+
+/* ─── "주여" intro words ─── */
+.juyeoLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.juyeo {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  font-weight: 400;
+  background: radial-gradient(
+    circle at 44% 3%,
+    rgba(248, 205, 251, 1) 0%,
+    rgba(233, 60, 95, 1) 17%,
+    rgba(105, 41, 154, 1) 50%,
+    rgba(151, 89, 188, 1) 64%,
+    rgba(185, 123, 212, 1) 76%,
+    rgba(242, 188, 160, 0.5) 94%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.juyeoBase {
+  font-size: 30px;
+  opacity: 0;
+  animation: juyeoFadeIn 1100ms ease forwards;
+}
+
+/* stacked, blurred, scaling copies that whoosh outward */
+.juyeoEcho {
+  opacity: 0;
+}
+
+.juyeoEcho1 {
+  font-size: 67px;
+  filter: blur(9px);
+  animation: juyeoEcho 1400ms ease forwards 200ms;
+}
+.juyeoEcho2 {
+  font-size: 127px;
+  filter: blur(17px);
+  animation: juyeoEcho 1400ms ease forwards 320ms;
+}
+.juyeoEcho3 {
+  font-size: 285px;
+  filter: blur(38px);
+  animation: juyeoEcho 1500ms ease forwards 440ms;
+}
+
+@keyframes juyeoFadeIn {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 0.9;
+    filter: blur(0.5px);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes juyeoEcho {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.6);
+  }
+}
+
+/* ─── Orb ─── */
+.orbWrap {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 300px;
+  height: 300px;
+  transform: translate(-50%, 0) scale(0.6);
+  opacity: 0;
+  z-index: 20;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 900ms ease;
+}
+
+.orbVisible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+/* gentle idle float + breathing */
+.orbFloat {
+  animation: orbFloat 6s ease-in-out infinite;
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -10px) scale(1.02);
+  }
+}
+
+.orbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px rgba(180, 90, 200, 0.35));
+  pointer-events: none;
+}
+
+/* name / placeholder inside the orb */
+.orbName {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 34px;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.orbPlaceholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ─── Cross of light (climax) ─── */
+.cross {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.crossActive {
+  animation: crossSeq 3200ms ease forwards;
+}
+
+.beam {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: linear-gradient(
+    var(--ang, 0deg),
+    transparent 0%,
+    rgba(248, 205, 251, 0.1) 25%,
+    rgba(233, 60, 160, 0.95) 50%,
+    rgba(248, 205, 251, 0.1) 75%,
+    transparent 100%
+  );
+  filter: blur(14px);
+  mix-blend-mode: screen;
+}
+
+.beamV {
+  --ang: 0deg;
+  width: 120px;
+  height: 200%;
+  transform: translate(-50%, -50%);
+}
+
+.beamH {
+  --ang: 90deg;
+  width: 200%;
+  height: 120px;
+  transform: translate(-50%, -50%);
+}
+
+.crossGlow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 250, 0.9) 0%,
+    rgba(233, 60, 160, 0.5) 35%,
+    transparent 70%
+  );
+  filter: blur(8px);
+  mix-blend-mode: screen;
+}
+
+@keyframes crossSeq {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(0.9) rotate(20deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.1) rotate(95deg);
+  }
+  80% {
+    opacity: 0.95;
+    transform: scale(1.5) rotate(120deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4) rotate(135deg);
+  }
+}
+
+/* orb behaviour while submitting */
+.orbSubmitting {
+  animation: orbShrink 2600ms ease forwards;
+}
+
+@keyframes orbShrink {
+  0% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(-50%, 0) scale(0.7) rotate(40deg);
+    opacity: 0.9;
+    filter: blur(2px);
+  }
+  70% {
+    transform: translate(-50%, 0) scale(0.25) rotate(120deg);
+    opacity: 0.4;
+    filter: blur(6px);
+  }
+  100% {
+    transform: translate(-50%, 0) scale(0.05) rotate(180deg);
+    opacity: 0;
+    filter: blur(12px);
+  }
+}
+
+/* ─── CTA button ─── */
+.cta {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 40px;
+  height: 76px;
+  border: none;
+  border-radius: 18px;
+  background: #fdf6ef;
+  color: #8a4bbf;
+  font-family: 'Zen Serif', serif;
+  font-size: 24px;
+  font-weight: 400;
+  z-index: 40;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease,
+    background 200ms ease;
+}
+
+.ctaVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta:active {
+  background: #f0e3d3;
+  transform: scale(0.98);
+}
+
+.ctaFading {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* ─── Hidden input for capturing typing ─── */
+.hiddenInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+}
+
+/* ─── Done screen ─── */
+.doneCounter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 48px;
+  text-align: center;
+  z-index: 30;
+  opacity: 0;
+  animation: doneFadeIn 800ms ease forwards 200ms;
+}
+
+.doneCount {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.doneName {
+  font-size: 42px;
+  color: #ffffff;
+}
+
+.doneOrbTop {
+  position: absolute;
+  left: 50%;
+  top: -150px;
+  width: 420px;
+  height: 420px;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  animation: doneOrbDrop 1200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.doneOrbTop img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 60px rgba(180, 90, 200, 0.4));
+}
+
+@keyframes doneFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes doneOrbDrop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-80px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* hint for desktop testers */
+.hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  z-index: 50;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbFloat,
+  .juyeoBase,
+  .juyeoEcho,
+  .crossActive,
+  .orbSubmitting {
+    animation: none;
+  }
+}
