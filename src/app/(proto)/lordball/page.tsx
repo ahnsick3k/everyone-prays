@@ -1,12 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 import styles from "./lordball.module.css";
-
-const LiquidChromeBall = dynamic(() => import("./LiquidChromeBall"), {
-  ssr: false,
-});
+import ChromeBall from "./ChromeBall";
 
 type Phase =
   | "intro"
@@ -24,6 +20,7 @@ const PRAY_TOTAL = 7;
 export default function LordBallPage() {
   const [phase, setPhase] = useState<Phase>("intro");
   const [name, setName] = useState("");
+  const [focused, setFocused] = useState(false);
   const [prayCount] = useState(() => Math.floor(Math.random() * PRAY_TOTAL) + 1);
   const inputRef = useRef<HTMLInputElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -144,19 +141,28 @@ export default function LordBallPage() {
 
         {/* Orb */}
         <div className={orbWrapClass}>
-          <LiquidChromeBall className={styles.orbCanvas} />
+          <ChromeBall className={styles.orbCanvas} />
           {(phase === "typing" ||
             phase === "complete" ||
             phase === "submitting") && (
             <span
               className={[
                 styles.orbName,
-                name.length === 0 ? styles.orbPlaceholder : "",
+                name.length === 0 && !(phase === "typing" && focused)
+                  ? styles.orbPlaceholder
+                  : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
             >
-              {name.length === 0 ? PLACEHOLDER : name}
+              {name.length === 0
+                ? phase === "typing" && focused
+                  ? ""
+                  : PLACEHOLDER
+                : name}
+              {phase === "typing" && focused && (
+                <span className={styles.caret} />
+              )}
             </span>
           )}
         </div>
@@ -177,6 +183,8 @@ export default function LordBallPage() {
           value={name}
           maxLength={20}
           onChange={(e) => setName(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           onKeyDown={(e) => {
             if (e.key === "Enter") confirmName();
           }}
@@ -194,7 +202,7 @@ export default function LordBallPage() {
         {phase === "done" && (
           <>
             <div className={styles.doneOrbTop}>
-              <LiquidChromeBall className={styles.orbCanvas} />
+              <ChromeBall className={styles.orbCanvas} />
             </div>
             <div className={styles.doneCounter}>
               <div className={styles.doneCount}>
@@ -205,9 +213,11 @@ export default function LordBallPage() {
           </>
         )}
 
-        {/* Desktop hint */}
+        {/* Hint */}
         {phase === "typing" && (
-          <div className={styles.hint}>이름을 입력하고 Enter</div>
+          <div className={styles.hint}>
+            {focused ? "Enter로 완료" : "화면을 탭하여 이름을 입력하세요"}
+          </div>
         )}
       </div>
     </div>
