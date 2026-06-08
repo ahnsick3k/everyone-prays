@@ -172,10 +172,9 @@
   }
 }
 
-.orbImg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.orbCanvas {
+  width: 100% !important;
+  height: 100% !important;
   filter: drop-shadow(0 0 40px rgba(180, 90, 200, 0.35));
   pointer-events: none;
 }
@@ -191,6 +190,7 @@
   text-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
   white-space: nowrap;
   pointer-events: none;
+  z-index: 2;
 }
 
 .orbPlaceholder {
@@ -397,6 +397,10 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: drop-shadow(0 20px 60px rgba(180, 90, 200, 0.4));
+}
+
+.doneOrbTop .orbCanvas {
   filter: drop-shadow(0 20px 60px rgba(180, 90, 200, 0.4));
 }
 

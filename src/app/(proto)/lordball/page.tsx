@@ -1,7 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import styles from "./lordball.module.css";
+
+const LiquidChromeBall = dynamic(() => import("./LiquidChromeBall"), {
+  ssr: false,
+});
 
 type Phase =
   | "intro"
@@ -139,8 +144,7 @@ export default function LordBallPage() {
 
         {/* Orb */}
         <div className={orbWrapClass}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/lordball/orb.png" alt="" className={styles.orbImg} />
+          <LiquidChromeBall className={styles.orbCanvas} />
           {(phase === "typing" ||
             phase === "complete" ||
             phase === "submitting") && (
@@ -190,8 +194,7 @@ export default function LordBallPage() {
         {phase === "done" && (
           <>
             <div className={styles.doneOrbTop}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/lordball/orb.png" alt="" />
+              <LiquidChromeBall className={styles.orbCanvas} />
             </div>
             <div className={styles.doneCounter}>
               <div className={styles.doneCount}>
