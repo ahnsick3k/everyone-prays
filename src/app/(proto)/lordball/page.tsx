@@ -172,6 +172,14 @@ export default function LordBallPage() {
               <span>입력 완료</span>
             </div>
           )}
+          {/* 3D orbital net cage — wraps the sphere after name is confirmed */}
+          {(phase === "complete" || phase === "submitting") && (
+            <div className={styles.netOuter}>
+              <div className={`${styles.netRing} ${styles.netRing1}`} />
+              <div className={`${styles.netRing} ${styles.netRing2}`} />
+              <div className={`${styles.netRing} ${styles.netRing3}`} />
+            </div>
+          )}
         </div>
 
         {/* Cross of light during submit */}

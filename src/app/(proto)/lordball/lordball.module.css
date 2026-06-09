@@ -183,11 +183,9 @@
 
 /* ─── CSS fallback liquid-chrome ball (no WebGL) ─── */
 /*
- * Multi-layer linear-gradient bands rotating at different speeds/directions
- * simulate liquid chrome. Each band is a diagonal colour stripe on a dark
- * base; mix-blend-mode: screen makes them blend additively, filter: blur
- * softens edges → smooth chrome-like flow.
- * Safari overflow+border-radius clip fix via mask-image.
+ * Dark sphere base + bright chrome bands + LIMB DARKENING overlay.
+ * Limb darkening (dark edges, lit center) is the key visual cue that makes
+ * a flat circle read as a 3D sphere. Safari clip fix via mask-image.
  */
 .cssBall {
   position: absolute;
@@ -195,138 +193,200 @@
   border-radius: 50%;
   overflow: hidden;
   pointer-events: none;
-  /* Safari clip fix */
   -webkit-mask-image: -webkit-radial-gradient(white, black);
   mask-image: radial-gradient(white, black);
+  /* Very dark base — chrome needs a near-black canvas */
   background: radial-gradient(
-    ellipse at 48% 38%,
-    #1e0c38 0%,
-    #0e0420 30%,
-    #05010f 65%,
-    #020108 100%
+    ellipse 65% 65% at 44% 36%,
+    #120438 0%,
+    #060115 28%,
+    #02000b 60%,
+    #010008 100%
   );
   box-shadow:
-    0 0 80px rgba(110, 45, 210, 0.65),
-    0 12px 50px rgba(70, 15, 140, 0.5);
+    0 0 100px rgba(140, 50, 255, 0.88),
+    0 28px 80px rgba(90, 15, 180, 0.72),
+    inset 0 0 55px rgba(0, 0, 0, 0.55);
 }
 
-/* Band 1 – main chrome sweep: blue-violet diagonal, slow rock */
-.cssBallBand1 {
+/* Main chrome sweep – magenta/violet/peach (same hue as WebGL env map) */
+.cssBallChrome {
   position: absolute;
   inset: -8%;
   background: linear-gradient(
-    148deg,
-    transparent 18%,
-    rgba(155, 125, 255, 0.3) 28%,
-    rgba(210, 185, 255, 0.72) 37%,
-    rgba(250, 240, 255, 0.97) 44%,
-    rgba(210, 185, 255, 0.72) 51%,
-    rgba(155, 125, 255, 0.3) 60%,
-    transparent 70%
-  );
-  mix-blend-mode: screen;
-  filter: blur(7px);
-  animation: bandRock1 14s ease-in-out infinite;
-}
-
-/* Band 2 – blue-teal sweep, steeper angle, counter-rocks */
-.cssBallBand2 {
-  position: absolute;
-  inset: -8%;
-  background: linear-gradient(
-    205deg,
-    transparent 28%,
-    rgba(75, 155, 255, 0.25) 37%,
-    rgba(145, 215, 255, 0.62) 45%,
-    rgba(200, 240, 255, 0.82) 51%,
-    rgba(145, 215, 255, 0.62) 57%,
-    rgba(75, 155, 255, 0.25) 65%,
-    transparent 74%
-  );
-  mix-blend-mode: screen;
-  filter: blur(6px);
-  animation: bandRock2 11s ease-in-out infinite reverse;
-}
-
-/* Band 3 – violet ribbon, crossing angle */
-.cssBallBand3 {
-  position: absolute;
-  inset: -8%;
-  background: linear-gradient(
-    112deg,
-    transparent 33%,
-    rgba(195, 75, 255, 0.2) 41%,
-    rgba(230, 140, 255, 0.52) 48%,
-    rgba(210, 95, 255, 0.22) 55%,
-    transparent 63%
+    158deg,
+    transparent 22%,
+    rgba(180, 50, 160, 0.12) 30%,
+    rgba(222, 80, 205, 0.65) 37%,
+    rgba(248, 165, 255, 0.96) 44%,
+    rgba(205, 100, 242, 0.60) 51%,
+    rgba(150, 50, 185, 0.12) 58%,
+    transparent 66%
   );
   mix-blend-mode: screen;
   filter: blur(5px);
-  animation: bandRock3 19s ease-in-out infinite;
+  animation: bandRock1 13s ease-in-out infinite;
 }
 
-/* Gold/warm accent – like the orange highlight in the reference */
+/* Blue-teal sweep – counter direction */
+.cssBallBlue {
+  position: absolute;
+  inset: -8%;
+  background: linear-gradient(
+    218deg,
+    transparent 28%,
+    rgba(40, 90, 225, 0.08) 36%,
+    rgba(90, 168, 255, 0.62) 43%,
+    rgba(168, 228, 255, 0.90) 50%,
+    rgba(90, 168, 255, 0.55) 57%,
+    rgba(40, 90, 225, 0.08) 64%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  filter: blur(5px);
+  animation: bandRock2 10s ease-in-out infinite reverse;
+}
+
+/* Gold / warm accent */
 .cssBallGold {
   position: absolute;
   inset: -8%;
   background: linear-gradient(
-    125deg,
-    transparent 14%,
-    rgba(255, 145, 25, 0.0) 20%,
-    rgba(255, 175, 55, 0.42) 26%,
-    rgba(255, 215, 95, 0.68) 31%,
-    rgba(255, 175, 55, 0.42) 36%,
-    rgba(255, 145, 25, 0.0) 42%,
+    130deg,
+    transparent 18%,
+    rgba(255, 140, 20, 0.0) 24%,
+    rgba(255, 188, 55, 0.58) 29%,
+    rgba(255, 228, 105, 0.84) 34%,
+    rgba(255, 188, 55, 0.50) 39%,
+    rgba(255, 140, 20, 0.0) 45%,
     transparent 52%
   );
   mix-blend-mode: screen;
   filter: blur(6px);
-  animation: bandRock4 24s ease-in-out infinite reverse;
+  animation: bandRock4 23s ease-in-out infinite;
 }
 
-/* Specular highlight – sharp bright spot top-left (static) */
+/* !! KEY LAYER !! – Limb darkening → 3D sphere illusion.
+   The dark ring at the edges makes the chrome bands look like they sit
+   on a spherical surface instead of a flat disc. */
+.cssBallLimb {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 40%,
+    rgba(0, 0, 4, 0.35) 56%,
+    rgba(0, 0, 4, 0.70) 72%,
+    rgba(0, 0, 4, 0.92) 86%,
+    rgba(0, 0, 4, 0.98) 100%
+  );
+  pointer-events: none;
+}
+
+/* Sharp specular highlight top-left + secondary rim fill bottom-right */
 .cssBallSpec {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
-      ellipse 22% 14% at 28% 19%,
-      rgba(255, 255, 255, 0.94) 0%,
+      ellipse 16% 9% at 25% 17%,
+      rgba(255, 255, 255, 0.98) 0%,
       rgba(255, 255, 255, 0) 100%
     ),
     radial-gradient(
-      ellipse 30% 18% at 74% 82%,
-      rgba(90, 155, 255, 0.32) 0%,
-      rgba(90, 155, 255, 0) 100%
+      ellipse 18% 11% at 78% 86%,
+      rgba(80, 148, 255, 0.36) 0%,
+      transparent 100%
     );
   pointer-events: none;
 }
 
-/* ── Band animations: each gently rocks + slight scale, creating liquid flow ── */
+/* ── Band rock animations ── */
 @keyframes bandRock1 {
-  0%   { transform: rotate(-8deg) scaleX(1.0); }
-  30%  { transform: rotate(11deg) scaleX(1.06); }
-  65%  { transform: rotate(3deg) scaleX(0.97); }
-  100% { transform: rotate(-8deg) scaleX(1.0); }
+  0%   { transform: rotate(-10deg) scaleX(1.03); }
+  35%  { transform: rotate(14deg) scaleX(1.09); }
+  70%  { transform: rotate(4deg) scaleX(0.95); }
+  100% { transform: rotate(-10deg) scaleX(1.03); }
 }
 
 @keyframes bandRock2 {
-  0%   { transform: rotate(14deg) scaleX(1.0); }
-  35%  { transform: rotate(-5deg) scaleX(1.04); }
-  70%  { transform: rotate(9deg) scaleX(0.96); }
-  100% { transform: rotate(14deg) scaleX(1.0); }
-}
-
-@keyframes bandRock3 {
-  0%   { transform: rotate(22deg); }
-  50%  { transform: rotate(-17deg); }
-  100% { transform: rotate(22deg); }
+  0%   { transform: rotate(15deg) scaleX(1.0); }
+  40%  { transform: rotate(-6deg) scaleX(1.06); }
+  75%  { transform: rotate(11deg) scaleX(0.93); }
+  100% { transform: rotate(15deg) scaleX(1.0); }
 }
 
 @keyframes bandRock4 {
-  0%   { transform: rotate(-22deg); }
-  50%  { transform: rotate(28deg); }
-  100% { transform: rotate(-22deg); }
+  0%   { transform: rotate(-24deg); }
+  50%  { transform: rotate(30deg); }
+  100% { transform: rotate(-24deg); }
+}
+
+/* ─── 3D orbital net / cross cage (complete phase) ─── */
+/*
+ * Three rings orbit the sphere on different planes, creating a spherical
+ * "net" / "cage" effect. Rings use perspective + rotateX + rotateY:
+ *   rotateX(large) → flattens circle to ellipse (tilted hoop)
+ *   rotateY(0→360) → animates hoop orbiting the sphere
+ * Different rotateZ pre-tilts put each ring on a different plane → 3D net.
+ */
+.netOuter {
+  position: absolute;
+  inset: -16%;          /* extends past ball edge so rings wrap around it  */
+  pointer-events: none;
+  perspective: 680px;   /* gives all child rings the same 3D vanishing point */
+  z-index: 22;
+  animation: netAppear 0.55s ease forwards;
+}
+
+@keyframes netAppear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.netRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform-origin: 50% 50%;
+}
+
+/* Ring 1 – equatorial plane, magenta */
+.netRing1 {
+  border: 1.5px solid rgba(233, 55, 155, 0.85);
+  box-shadow: 0 0 14px rgba(233, 55, 155, 0.55), 0 0 4px rgba(233, 55, 155, 0.8);
+  animation: netOrbit1 2.5s linear infinite;
+}
+
+/* Ring 2 – plane rotated 65° around Z, violet */
+.netRing2 {
+  border: 1.5px solid rgba(160, 75, 255, 0.78);
+  box-shadow: 0 0 12px rgba(160, 75, 255, 0.48), 0 0 4px rgba(160, 75, 255, 0.75);
+  animation: netOrbit2 3.2s linear infinite;
+}
+
+/* Ring 3 – plane rotated -55° around Z, blue */
+.netRing3 {
+  border: 1.5px solid rgba(90, 165, 255, 0.72);
+  box-shadow: 0 0 10px rgba(90, 165, 255, 0.42), 0 0 4px rgba(90, 165, 255, 0.70);
+  animation: netOrbit3 4.1s linear infinite;
+}
+
+/* Each orbit: tilt the ring (rotateX) then spin it around the sphere (rotateY).
+   rotateZ before rotateX changes the tilt axis → different orbit planes. */
+@keyframes netOrbit1 {
+  from { transform: rotateX(82deg) rotateY(0deg); }
+  to   { transform: rotateX(82deg) rotateY(360deg); }
+}
+
+@keyframes netOrbit2 {
+  from { transform: rotateZ(65deg) rotateX(82deg) rotateY(0deg); }
+  to   { transform: rotateZ(65deg) rotateX(82deg) rotateY(360deg); }
+}
+
+@keyframes netOrbit3 {
+  from { transform: rotateZ(-55deg) rotateX(82deg) rotateY(0deg); }
+  to   { transform: rotateZ(-55deg) rotateX(82deg) rotateY(360deg); }
 }
 
 /* name / placeholder inside the orb */

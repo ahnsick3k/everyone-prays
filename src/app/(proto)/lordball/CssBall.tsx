@@ -3,24 +3,23 @@
 import styles from "./lordball.module.css";
 
 /**
- * Pure-CSS liquid chrome ball — works everywhere, no WebGL required.
- * Used as the universal fallback (and SSR placeholder) for the 3D ball.
+ * Pure-CSS liquid chrome ball.
  *
- * Layers (bottom→top):
- *   cssBall       – dark sphere base + outer glow
- *   cssBallBand1  – main chrome sweep (blue-violet diagonal, slow rock)
- *   cssBallBand2  – blue-teal sweep (counter-rock)
- *   cssBallBand3  – violet ribbon (crossing angle)
- *   cssBallGold   – warm gold/orange accent
- *   cssBallSpec   – static sharp specular + bottom-rim fill
+ * Layers (bottom → top):
+ *   cssBall      – very dark sphere base + outer glow
+ *   cssBallChrome – main chrome sweep (magenta/violet/peach, matches WebGL env map)
+ *   cssBallBlue  – blue-teal sweep (counter-direction)
+ *   cssBallGold  – warm gold accent
+ *   cssBallLimb  – LIMB DARKENING: dark ring at edges → 3D sphere illusion
+ *   cssBallSpec  – sharp specular highlight + secondary rim fill
  */
 export default function CssBall({ className }: { className?: string }) {
   return (
     <div className={`${styles.cssBall} ${className ?? ""}`} aria-hidden="true">
-      <span className={styles.cssBallBand1} />
-      <span className={styles.cssBallBand2} />
-      <span className={styles.cssBallBand3} />
+      <span className={styles.cssBallChrome} />
+      <span className={styles.cssBallBlue} />
       <span className={styles.cssBallGold} />
+      <span className={styles.cssBallLimb} />
       <span className={styles.cssBallSpec} />
     </div>
   );
