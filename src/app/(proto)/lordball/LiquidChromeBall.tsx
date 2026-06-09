@@ -55,10 +55,11 @@ function useIridescentEnv() {
       0,
       w * 0.5,
       h * 0.5,
-      w * 0.22
+      w * 0.26
     );
-    dark.addColorStop(0, "rgba(8,2,12,1)");
-    dark.addColorStop(1, "rgba(8,2,12,0)");
+    dark.addColorStop(0, "rgba(5,1,10,1)");
+    dark.addColorStop(0.7, "rgba(5,1,10,0.6)");
+    dark.addColorStop(1, "rgba(5,1,10,0)");
     ctx.fillStyle = dark;
     ctx.fillRect(0, 0, w, h);
 
@@ -83,16 +84,16 @@ function Ball() {
   });
 
   return (
-    <mesh ref={mesh} scale={1.1}>
+    <mesh ref={mesh} scale={1.22}>
       <sphereGeometry args={[1, 128, 128]} />
       <MeshDistortMaterial
-        color="#0a0410"
+        color="#070210"
         metalness={1}
-        roughness={0.26}
-        distort={0.3}
-        speed={1.5}
+        roughness={0.18}
+        distort={0.45}
+        speed={1.8}
         envMap={env}
-        envMapIntensity={1.7}
+        envMapIntensity={2.2}
       />
     </mesh>
   );
@@ -108,7 +109,7 @@ export default function LiquidChromeBall({
       className={className}
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0, 0, 5.5], fov: 30 }}
+      camera={{ position: [0, 0, 4.5], fov: 28 }}
     >
       <Suspense fallback={null}>
         <ambientLight intensity={0.3} />

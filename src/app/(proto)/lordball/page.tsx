@@ -165,6 +165,13 @@ export default function LordBallPage() {
               )}
             </span>
           )}
+          {/* Enter / Done indicator — visible once user has typed something */}
+          {phase === "typing" && name.trim().length > 0 && (
+            <div className={styles.enterHint}>
+              <span className={styles.enterHintKey}>↵</span>
+              <span>입력 완료</span>
+            </div>
+          )}
         </div>
 
         {/* Cross of light during submit */}
@@ -182,6 +189,8 @@ export default function LordBallPage() {
           className={styles.hiddenInput}
           value={name}
           maxLength={20}
+          inputMode="text"
+          enterKeyHint="done"
           onChange={(e) => setName(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
