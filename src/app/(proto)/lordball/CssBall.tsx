@@ -3,15 +3,15 @@
 import styles from "./lordball.module.css";
 
 /**
- * Pure-CSS liquid chrome ball.
+ * Pure-CSS liquid plum orb tuned to the Lordball reference.
  *
  * Layers (bottom → top):
- *   cssBall      – very dark sphere base + outer glow
- *   cssBallChrome – main chrome sweep (magenta/violet/peach, matches WebGL env map)
- *   cssBallBlue  – blue-teal sweep (counter-direction)
- *   cssBallGold  – warm gold accent
- *   cssBallLimb  – LIMB DARKENING: dark ring at edges → 3D sphere illusion
- *   cssBallSpec  – sharp specular highlight + secondary rim fill
+ *   cssBall       – near-black plum core + soft outer glow
+ *   cssBallChrome – hot magenta / pink top and rim sheen
+ *   cssBallBlue   – internal plum/violet body haze
+ *   cssBallGold   – warm peach-white bloom near the bottom edge
+ *   cssBallLimb   – center darkening + soft edge falloff for volume
+ *   cssBallSpec   – thin glossy rim hits and side highlights
  */
 export default function CssBall({ className }: { className?: string }) {
   return (
