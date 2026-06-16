@@ -1,0 +1,18 @@
+{
+	"appId": "app.everyoneprays",
+	"appName": "Every 1 Pray",
+	"webDir": "out",
+	"server": {
+		"url": "https://everyone-prays.vercel.app",
+		"cleartext": false
+	},
+	"plugins": {
+		"PushNotifications": {
+			"presentationOptions": [
+				"badge",
+				"sound",
+				"alert"
+			]
+		}
+	}
+}
