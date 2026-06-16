@@ -243,6 +243,60 @@ body {
   padding-bottom: 84px;
 }
 
+.proto-shell {
+  width: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
+}
+
+.proto-complete-chip {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.82);
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  animation: protoCompleteChipPulse 1.8s ease-in-out infinite;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.proto-complete-chip:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+
+.proto-complete-chip:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+.proto-complete-chip-key {
+  font-size: 16px;
+  line-height: 1;
+}
+
+@keyframes protoCompleteChipPulse {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+}
+
 .desktop-sidebar {
   display: none;
 }
@@ -304,6 +358,11 @@ body {
     -webkit-overflow-scrolling: touch;
     padding-bottom: 0;
     position: relative;
+  }
+
+  .proto-shell {
+    min-height: 100%;
+    height: 100%;
   }
 
   /* TabBar: stay inside phone frame */

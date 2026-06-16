@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./lordball.module.css";
 import ChromeBall from "./ChromeBall";
+import ProtoCompleteChip from "@/components/ProtoCompleteChip";
 
 type Phase =
   | "intro"
@@ -167,10 +168,7 @@ export default function LordBallPage() {
           )}
           {/* Enter / Done indicator — visible once user has typed something */}
           {phase === "typing" && name.trim().length > 0 && (
-            <div className={styles.enterHint}>
-              <span className={styles.enterHintKey}>↵</span>
-              <span>입력 완료</span>
-            </div>
+            <ProtoCompleteChip onClick={confirmName} />
           )}
           {/* 3D orbital net cage — wraps the sphere after name is confirmed */}
           {(phase === "complete" || phase === "submitting") && (
