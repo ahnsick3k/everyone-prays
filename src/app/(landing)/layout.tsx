@@ -30,6 +30,11 @@ export default function LandingLayout({
       {children}
       <footer className="landing-footer">
         <p>© 2026 HUG CENTER. ALL RIGHTS RESERVED. EVERY 1 PRAY · 생각나는 그 사람을 위한 하루 1번의 중보기도</p>
+        <p style={{ marginTop: '0.5rem', fontSize: '0.75rem', opacity: 0.5 }}>
+          <Link href="/privacy" style={{ textDecoration: 'underline' }}>
+            {lang === 'ko' ? '개인정보처리방침' : 'Privacy Policy'}
+          </Link>
+        </p>
       </footer>
     </div>
   );
