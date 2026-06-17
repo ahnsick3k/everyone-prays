@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'app.everyoneprays',
-  appName: 'Every 1 Pray',
+  appName: 'every1pray',
   webDir: 'out',
   server: {
     url: 'https://everyone-prays.vercel.app',

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Every 1 Pray</string>
-    <string name="title_activity_main">Every 1 Pray</string>
+    <string name="app_name">every1pray</string>
+    <string name="title_activity_main">every1pray</string>
     <string name="package_name">app.everyoneprays</string>
     <string name="custom_url_scheme">app.everyoneprays</string>
 </resources>
