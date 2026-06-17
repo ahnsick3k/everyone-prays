@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Android keystore (보안 — 절대 커밋 금지)
+/android-keystore/
+*.keystore
+*.jks
