@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "app.everyoneprays"
+    namespace = "app.every1pray"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "app.everyoneprays"
+        applicationId "app.every1pray"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
