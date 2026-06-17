@@ -50,10 +50,10 @@ export default function DesktopSidebar() {
         </p>
 
         <div className="sidebar-buttons">
-          <a href="/install" className="sidebar-btn sidebar-btn-primary">
+          <a href="/every1pray/install" className="sidebar-btn sidebar-btn-primary">
             설치 안내
           </a>
-          <a href="/about" className="sidebar-btn sidebar-btn-outline">
+          <a href="/every1pray/about" className="sidebar-btn sidebar-btn-outline">
             EVERY 1 PRAY 소개
           </a>
         </div>

@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'every1pray',
   webDir: 'out',
   server: {
-    url: 'https://everyone-prays.vercel.app',
+    url: 'https://hugging.kr/every1pray',
     cleartext: false,
   },
   plugins: {

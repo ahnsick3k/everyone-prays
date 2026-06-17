@@ -14,9 +14,9 @@ import {
 } from '@heroicons/react/24/solid';
 
 const tabs = [
-  { href: '/calendar', label: '캘린더', outline: CalendarOutline, solid: CalendarSolid },
-  { href: '/', label: '홈', outline: HomeOutline, solid: HomeSolid },
-  { href: '/reservation', label: '예약', outline: ClockOutline, solid: ClockSolid },
+  { href: '/every1pray/calendar', label: '캘린더', outline: CalendarOutline, solid: CalendarSolid },
+  { href: '/every1pray', label: '홈', outline: HomeOutline, solid: HomeSolid },
+  { href: '/every1pray/reservation', label: '예약', outline: ClockOutline, solid: ClockSolid },
 ];
 
 export default function TabBar() {
