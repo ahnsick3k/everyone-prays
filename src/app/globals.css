@@ -947,8 +947,8 @@ body {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 9999px;
-  color: rgba(255, 255, 255, 0.85);
-  font-family: 'Pretendard', sans-serif;
+  color: #ffffff;
+  transition: background 150ms ease, border-color 150ms ease;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -956,7 +956,7 @@ body {
   z-index: 30;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  transition: background 150ms ease, border-color 150ms ease;
+  color: #ffffff;
 }
 
 .proto-complete-chip:active {
