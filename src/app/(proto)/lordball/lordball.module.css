@@ -625,6 +625,37 @@
   pointer-events: none;
 }
 
+/* ─── Real text input on orb (replaces custom orbName + caret) ─── */
+.orbInput {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: 'Zen Serif', 'Pretendard', serif;
+  font-size: 34px;
+  font-weight: 400;
+  text-align: center;
+  caret-color: #ffffff;
+  z-index: 2;
+  pointer-events: auto;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.orbInput::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.orbInput:read-only {
+  pointer-events: none;
+  caret-color: transparent;
+}
+
 /* ─── Hidden input for capturing typing ─── */
 .hiddenInput {
   position: absolute;

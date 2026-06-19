@@ -146,38 +146,33 @@ export default function LordBallPage() {
           {(phase === "typing" ||
             phase === "complete" ||
             phase === "submitting") && (
-            <span
-              className={[
-                styles.orbName,
-                name.length === 0 && !(phase === "typing" && focused)
-                  ? styles.orbPlaceholder
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              {name.length === 0
-                ? phase === "typing" && focused
-                  ? ""
-                  : PLACEHOLDER
-                : name}
-              {phase === "typing" && focused && (
-                <span className={styles.caret} />
-              )}
-            </span>
+            <input
+              ref={inputRef}
+              className={styles.orbInput}
+              value={name}
+              maxLength={20}
+              inputMode="text"
+              enterKeyHint="done"
+              placeholder={phase === "typing" ? PLACEHOLDER : ""}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              readOnly={phase !== "typing"}
+              onChange={(e) => setName(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") confirmName();
+              }}
+              aria-label="이름 입력"
+            />
           )}
           {/* Enter / Done indicator — visible once user has typed something */}
           {phase === "typing" && name.trim().length > 0 && (
             <ProtoCompleteChip onClick={confirmName} />
           )}
-          {/* 3D orbital net cage — wraps the sphere after name is confirmed */}
-          {(phase === "complete" || phase === "submitting") && (
-            <div className={styles.netOuter}>
-              <div className={`${styles.netRing} ${styles.netRing1}`} />
-              <div className={`${styles.netRing} ${styles.netRing2}`} />
-              <div className={`${styles.netRing} ${styles.netRing3}`} />
-            </div>
-          )}
+          {/* cross light stays, net cage removed */}
         </div>
 
         {/* Cross of light during submit */}
@@ -188,23 +183,6 @@ export default function LordBallPage() {
             <span className={styles.crossGlow} />
           </div>
         )}
-
-        {/* Hidden input to capture typing */}
-        <input
-          ref={inputRef}
-          className={styles.hiddenInput}
-          value={name}
-          maxLength={20}
-          inputMode="text"
-          enterKeyHint="done"
-          onChange={(e) => setName(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") confirmName();
-          }}
-          aria-label="이름 입력"
-        />
 
         {/* CTA */}
         {(phase === "complete" || phase === "submitting") && (
