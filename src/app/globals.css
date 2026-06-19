@@ -931,3 +931,39 @@ body {
     align-items: center;
   }
 }
+
+/* ─── ProtoCompleteChip (lordball / garden) ─── */
+/* Positioned inside .orbWrap — 24px below the centered orbName text */
+.proto-complete-chip {
+  position: absolute;
+  left: 50%;
+  /* orbName is at top:50%; font-size 34px → bottom edge ~50%+17px; +24px gap */
+  top: calc(50% + 41px);
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 30;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.proto-complete-chip:active {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.proto-complete-chip-key {
+  font-size: 12px;
+  opacity: 0.7;
+}
