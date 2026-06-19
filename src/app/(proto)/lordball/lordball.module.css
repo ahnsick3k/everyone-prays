@@ -1,0 +1,723 @@
+/* ─── LordBall (SayQ 주여볼) prayer interaction ─── */
+
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  background: #2f0249;
+  font-family: 'Zen Serif', 'Pretendard', serif;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@media (max-width: 767px) {
+  .root {
+    min-height: 100dvh;
+    height: 100dvh;
+  }
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  overflow: hidden;
+  background: #2f0249;
+  transition: background 800ms ease;
+}
+
+/* intro phase has the dark maroon background */
+.stageIntro {
+  background: #371621;
+}
+
+/* full-screen magenta cross backdrop during the climax */
+.stageBurst {
+  background: #14000f;
+}
+
+/* ─── Title ─── */
+.title {
+  position: absolute;
+  top: 68px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  z-index: 30;
+  transition: opacity 700ms ease;
+  pointer-events: none;
+}
+
+.titleHidden {
+  opacity: 0;
+}
+
+/* ─── "주여" intro words ─── */
+.juyeoLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.juyeo {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  font-weight: 400;
+  background: radial-gradient(
+    circle at 44% 3%,
+    rgba(248, 205, 251, 1) 0%,
+    rgba(233, 60, 95, 1) 17%,
+    rgba(105, 41, 154, 1) 50%,
+    rgba(151, 89, 188, 1) 64%,
+    rgba(185, 123, 212, 1) 76%,
+    rgba(242, 188, 160, 0.5) 94%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.juyeoBase {
+  font-size: 30px;
+  opacity: 0;
+  animation: juyeoFadeIn 1100ms ease forwards;
+}
+
+/* stacked, blurred, scaling copies that whoosh outward */
+.juyeoEcho {
+  opacity: 0;
+}
+
+.juyeoEcho1 {
+  font-size: 67px;
+  filter: blur(9px);
+  animation: juyeoEcho 1400ms ease forwards 200ms;
+}
+.juyeoEcho2 {
+  font-size: 127px;
+  filter: blur(17px);
+  animation: juyeoEcho 1400ms ease forwards 320ms;
+}
+.juyeoEcho3 {
+  font-size: 285px;
+  filter: blur(38px);
+  animation: juyeoEcho 1500ms ease forwards 440ms;
+}
+
+@keyframes juyeoFadeIn {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 0.9;
+    filter: blur(0.5px);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes juyeoEcho {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.6);
+  }
+}
+
+/* ─── Orb ─── */
+.orbWrap {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  /* Responsive: fills ~82% of viewport width, capped at 380px.
+     On iPhone 390px → 320px / iPhone Pro Max 430px → 353px / Desktop → 380px */
+  width: min(82vw, 380px);
+  height: min(82vw, 380px);
+  transform: translate(-50%, 0) scale(0.6);
+  opacity: 0;
+  z-index: 20;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 900ms ease;
+}
+
+.orbVisible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+/* gentle idle float + breathing */
+.orbFloat {
+  animation: orbFloat 6s ease-in-out infinite;
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -14px) scale(1.025);
+  }
+}
+
+.orbCanvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 52px rgba(186, 102, 255, 0.22));
+  pointer-events: none;
+}
+
+/* ─── Lordball reference orb ─── */
+/*
+ * Match target look: almost-black plum core, hot magenta crown, violet rims,
+ * and a soft peach-white bloom at the lower edge.
+ */
+.cssBall {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+  background: radial-gradient(
+    ellipse 68% 68% at 52% 50%,
+    #0c0416 0%,
+    #090212 38%,
+    #13051f 58%,
+    #2d0b43 78%,
+    #4b165f 100%
+  );
+  box-shadow:
+    0 0 82px rgba(191, 110, 255, 0.20),
+    0 24px 72px rgba(103, 20, 156, 0.36),
+    inset 0 0 64px rgba(0, 0, 0, 0.44);
+}
+
+.cssBallChrome {
+  position: absolute;
+  inset: -4%;
+  background:
+    radial-gradient(
+      ellipse 88% 20% at 50% 5%,
+      rgba(255, 98, 124, 0.95) 0%,
+      rgba(255, 94, 132, 0.88) 24%,
+      rgba(255, 94, 132, 0.34) 46%,
+      rgba(255, 94, 132, 0) 76%
+    ),
+    radial-gradient(
+      ellipse 20% 74% at 4% 52%,
+      rgba(215, 155, 255, 0.88) 0%,
+      rgba(195, 124, 255, 0.68) 28%,
+      rgba(195, 124, 255, 0.18) 52%,
+      rgba(195, 124, 255, 0) 76%
+    ),
+    radial-gradient(
+      ellipse 17% 70% at 97% 53%,
+      rgba(255, 239, 255, 0.96) 0%,
+      rgba(246, 198, 255, 0.54) 24%,
+      rgba(246, 198, 255, 0.15) 48%,
+      rgba(246, 198, 255, 0) 74%
+    );
+  mix-blend-mode: screen;
+  filter: blur(8px);
+  animation: bandRock1 12s ease-in-out infinite;
+}
+
+.cssBallBlue {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 34% 56% at 18% 58%,
+      rgba(122, 56, 188, 0.34) 0%,
+      rgba(122, 56, 188, 0.22) 26%,
+      rgba(122, 56, 188, 0) 72%
+    ),
+    radial-gradient(
+      ellipse 38% 30% at 78% 18%,
+      rgba(171, 45, 120, 0.18) 0%,
+      rgba(171, 45, 120, 0.10) 38%,
+      rgba(171, 45, 120, 0) 72%
+    ),
+    radial-gradient(
+      ellipse 50% 62% at 72% 72%,
+      rgba(96, 33, 140, 0.18) 0%,
+      rgba(96, 33, 140, 0) 72%
+    );
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  animation: bandRock2 16s ease-in-out infinite;
+}
+
+.cssBallGold {
+  position: absolute;
+  inset: -3%;
+  background:
+    radial-gradient(
+      ellipse 58% 22% at 56% 97%,
+      rgba(255, 250, 238, 0.98) 0%,
+      rgba(255, 233, 198, 0.92) 20%,
+      rgba(255, 212, 170, 0.74) 38%,
+      rgba(255, 192, 154, 0.42) 54%,
+      rgba(255, 192, 154, 0) 82%
+    ),
+    radial-gradient(
+      ellipse 24% 16% at 82% 84%,
+      rgba(255, 221, 190, 0.72) 0%,
+      rgba(255, 221, 190, 0) 84%
+    );
+  mix-blend-mode: screen;
+  filter: blur(5px);
+  animation: bandRock4 14s ease-in-out infinite;
+}
+
+.cssBallLimb {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 52% 54%,
+      rgba(4, 1, 10, 0.92) 0%,
+      rgba(4, 1, 10, 0.88) 32%,
+      rgba(6, 2, 12, 0.66) 48%,
+      rgba(9, 3, 16, 0.18) 70%,
+      rgba(9, 3, 16, 0) 82%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 0, 0, 0) 60%,
+      rgba(45, 12, 63, 0.10) 78%,
+      rgba(89, 35, 115, 0.18) 88%,
+      rgba(255, 237, 248, 0.22) 97%,
+      rgba(255, 237, 248, 0) 100%
+    );
+  pointer-events: none;
+}
+
+.cssBallSpec {
+  position: absolute;
+  inset: 0;
+  background:
+   radial-gradient(
+      ellipse 42% 10% at 55% 4%,
+      rgba(255, 248, 252, 0.88) 0%,
+      rgba(255, 248, 252, 0.34) 36%,
+      rgba(255, 248, 252, 0) 86%
+    ),
+    radial-gradient(
+      ellipse 12% 46% at 88% 44%,
+      rgba(255, 244, 255, 0.44) 0%,
+      rgba(255, 244, 255, 0.16) 28%,
+      rgba(255, 244, 255, 0) 72%
+    ),
+    radial-gradient(
+      ellipse 14% 38% at 11% 66%,
+      rgba(194, 126, 255, 0.44) 0%,
+      rgba(194, 126, 255, 0.18) 30%,
+      rgba(194, 126, 255, 0) 74%
+    );
+  pointer-events: none;
+}
+
+/* ── Band rock animations ── */
+@keyframes bandRock1 {
+  0%   { transform: rotate(-4deg) scale(1.015); }
+  50%  { transform: rotate(4deg) scale(1.03); }
+  100% { transform: rotate(-4deg) scale(1.015); }
+}
+
+@keyframes bandRock2 {
+  0%   { transform: translate(-2%, 1%) scale(1); }
+  50%  { transform: translate(2%, -1%) scale(1.03); }
+  100% { transform: translate(-2%, 1%) scale(1); }
+}
+
+@keyframes bandRock4 {
+  0%   { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(-1.5%) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ─── 3D orbital net / cross cage (complete phase) ─── */
+/*
+ * Three rings orbit the sphere on different planes, creating a spherical
+ * "net" / "cage" effect. Rings use perspective + rotateX + rotateY:
+ *   rotateX(large) → flattens circle to ellipse (tilted hoop)
+ *   rotateY(0→360) → animates hoop orbiting the sphere
+ * Different rotateZ pre-tilts put each ring on a different plane → 3D net.
+ */
+.netOuter {
+  position: absolute;
+  inset: -16%;          /* extends past ball edge so rings wrap around it  */
+  pointer-events: none;
+  perspective: 680px;   /* gives all child rings the same 3D vanishing point */
+  z-index: 22;
+  animation: netAppear 0.55s ease forwards;
+}
+
+@keyframes netAppear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.netRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform-origin: 50% 50%;
+}
+
+/* Ring 1 – equatorial plane, magenta */
+.netRing1 {
+  border: 1.5px solid rgba(233, 55, 155, 0.85);
+  box-shadow: 0 0 14px rgba(233, 55, 155, 0.55), 0 0 4px rgba(233, 55, 155, 0.8);
+  animation: netOrbit1 2.5s linear infinite;
+}
+
+/* Ring 2 – plane rotated 65° around Z, violet */
+.netRing2 {
+  border: 1.5px solid rgba(160, 75, 255, 0.78);
+  box-shadow: 0 0 12px rgba(160, 75, 255, 0.48), 0 0 4px rgba(160, 75, 255, 0.75);
+  animation: netOrbit2 3.2s linear infinite;
+}
+
+/* Ring 3 – plane rotated -55° around Z, blue */
+.netRing3 {
+  border: 1.5px solid rgba(90, 165, 255, 0.72);
+  box-shadow: 0 0 10px rgba(90, 165, 255, 0.42), 0 0 4px rgba(90, 165, 255, 0.70);
+  animation: netOrbit3 4.1s linear infinite;
+}
+
+/* Each orbit: tilt the ring (rotateX) then spin it around the sphere (rotateY).
+   rotateZ before rotateX changes the tilt axis → different orbit planes. */
+@keyframes netOrbit1 {
+  from { transform: rotateX(82deg) rotateY(0deg); }
+  to   { transform: rotateX(82deg) rotateY(360deg); }
+}
+
+@keyframes netOrbit2 {
+  from { transform: rotateZ(65deg) rotateX(82deg) rotateY(0deg); }
+  to   { transform: rotateZ(65deg) rotateX(82deg) rotateY(360deg); }
+}
+
+@keyframes netOrbit3 {
+  from { transform: rotateZ(-55deg) rotateX(82deg) rotateY(0deg); }
+  to   { transform: rotateZ(-55deg) rotateX(82deg) rotateY(360deg); }
+}
+
+/* name / placeholder inside the orb */
+.orbName {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 34px;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.orbPlaceholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ─── Enter / Done hint ─── */
+/* Appears inside the orb near the bottom when typing and name.length > 0 */
+/* blinking text caret to signal the typing area */
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.92em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+  animation: caretBlink 1.05s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ─── Cross of light (climax) ─── */
+.cross {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.crossActive {
+  animation: crossSeq 3200ms ease forwards;
+}
+
+.beam {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: linear-gradient(
+    var(--ang, 0deg),
+    transparent 0%,
+    rgba(248, 205, 251, 0.1) 25%,
+    rgba(233, 60, 160, 0.95) 50%,
+    rgba(248, 205, 251, 0.1) 75%,
+    transparent 100%
+  );
+  filter: blur(14px);
+  mix-blend-mode: screen;
+}
+
+.beamV {
+  --ang: 0deg;
+  width: 120px;
+  height: 200%;
+  transform: translate(-50%, -50%);
+}
+
+.beamH {
+  --ang: 90deg;
+  width: 200%;
+  height: 120px;
+  transform: translate(-50%, -50%);
+}
+
+.crossGlow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 250, 0.9) 0%,
+    rgba(233, 60, 160, 0.5) 35%,
+    transparent 70%
+  );
+  filter: blur(8px);
+  mix-blend-mode: screen;
+}
+
+@keyframes crossSeq {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(0.9) rotate(20deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.1) rotate(95deg);
+  }
+  80% {
+    opacity: 0.95;
+    transform: scale(1.5) rotate(120deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4) rotate(135deg);
+  }
+}
+
+/* orb behaviour while submitting */
+.orbSubmitting {
+  animation: orbShrink 2600ms ease forwards;
+}
+
+@keyframes orbShrink {
+  0% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(-50%, 0) scale(0.7) rotate(40deg);
+    opacity: 0.9;
+    filter: blur(2px);
+  }
+  70% {
+    transform: translate(-50%, 0) scale(0.25) rotate(120deg);
+    opacity: 0.4;
+    filter: blur(6px);
+  }
+  100% {
+    transform: translate(-50%, 0) scale(0.05) rotate(180deg);
+    opacity: 0;
+    filter: blur(12px);
+  }
+}
+
+/* ─── CTA button ─── */
+.cta {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 40px;
+  height: 76px;
+  border: none;
+  border-radius: 18px;
+  background: #fdf6ef;
+  color: #8a4bbf;
+  font-family: 'Zen Serif', serif;
+  font-size: 24px;
+  font-weight: 400;
+  z-index: 40;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease,
+    background 200ms ease;
+}
+
+.ctaVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta:active {
+  background: #f0e3d3;
+  transform: scale(0.98);
+}
+
+.ctaFading {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* ─── Hidden input for capturing typing ─── */
+.hiddenInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+}
+
+/* ─── Done screen ─── */
+.doneCounter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 48px;
+  text-align: center;
+  z-index: 30;
+  opacity: 0;
+  animation: doneFadeIn 800ms ease forwards 200ms;
+}
+
+.doneCount {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.doneName {
+  font-size: 42px;
+  color: #ffffff;
+}
+
+.doneOrbTop {
+  position: absolute;
+  left: 50%;
+  top: -150px;
+  width: 420px;
+  height: 420px;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  animation: doneOrbDrop 1200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.doneOrbTop img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 60px rgba(180, 90, 200, 0.4));
+}
+
+.doneOrbTop .orbCanvas {
+  filter: drop-shadow(0 20px 60px rgba(180, 90, 200, 0.4));
+}
+
+@keyframes doneFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes doneOrbDrop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-80px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* hint for desktop testers */
+.hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  text-align: center;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  z-index: 50;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbFloat,
+  .juyeoBase,
+  .juyeoEcho,
+  .crossActive,
+  .orbSubmitting {
+    animation: none;
+  }
+}

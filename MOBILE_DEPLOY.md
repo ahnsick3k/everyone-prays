@@ -22,7 +22,7 @@
 
 ### 공통
 - [x] `capacitor.config.ts` 루트 생성 (server.url: `https://hugging.kr/every1pray`)
-- [x] `next.config.ts` — `output: 'export'` 정적 빌드 설정
+- [x] `next.config.ts` — Vercel 서버 빌드 유지 (Firebase/Route Handler 지원)
 - [x] `package.json` — `@capacitor/cli`, `@capacitor/assets`, `@capacitor/splash-screen` 추가
 - [x] 빌드 스크립트 추가: `build:static`, `cap:sync`, `cap:ios`, `cap:android`
 - [x] 앱 아이콘 소스 생성 (`assets/icon.png` 1024×1024)
@@ -77,6 +77,7 @@
 - [ ] Push Notifications Capability 추가
 - [ ] Background Modes → Remote notifications 체크
 - [ ] Firebase `GoogleService-Info.plist` Xcode에 추가
+- [ ] Firebase Console 에 APNs Auth Key (.p8) 업로드
 - [ ] Archive 빌드 → App Store Connect 업로드
 - [ ] TestFlight 내부 테스트
 - [ ] App Store 심사 제출

@@ -44,3 +44,7 @@ next-env.d.ts
 /android-keystore/
 *.keystore
 *.jks
+
+# Firebase native config (보안 — 절대 커밋 금지)
+/android/app/google-services.json
+/ios/App/App/GoogleService-Info.plist

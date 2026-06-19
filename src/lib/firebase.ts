@@ -1,28 +1,42 @@
-// Firebase 초기화
-// 실제 값은 Firebase Console > 프로젝트 설정 > 앱 추가 에서 발급받아 채워주세요
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { getMessaging as getFirebaseMessaging } from 'firebase-admin/messaging';
 
-import { initializeApp, getApps } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+function getFirebaseAdminConfig() {
+  const projectId =
+    process.env.FIREBASE_PROJECT_ID ?? process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? '',
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? '',
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? '',
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? '',
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? '',
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? '',
-};
-
-export const firebaseApp =
-  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-
-export function getFirebaseMessaging() {
-  if (typeof window === 'undefined') return null;
-  try {
-    return getMessaging(firebaseApp);
-  } catch {
+  if (!projectId || !clientEmail || !privateKey) {
     return null;
   }
+
+  return {
+    projectId,
+    clientEmail,
+    privateKey,
+  };
 }
 
-export { getToken, onMessage };
+function getFirebaseAdminApp() {
+  const existingApp = getApps()[0];
+  if (existingApp) {
+    return existingApp;
+  }
+
+  const config = getFirebaseAdminConfig();
+  if (!config) {
+    throw new Error(
+      'Firebase Admin SDK is not configured. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY.',
+    );
+  }
+
+  return initializeApp({
+    credential: cert(config),
+    projectId: config.projectId,
+  });
+}
+
+export function getMessaging() {
+  return getFirebaseMessaging(getFirebaseAdminApp());
+}

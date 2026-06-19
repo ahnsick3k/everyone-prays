@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'app.every1pray',
   appName: 'every1pray',
-  webDir: 'out',
+  webDir: 'cap-shell',
   server: {
     url: 'https://hugging.kr/every1pray',
     cleartext: false,
