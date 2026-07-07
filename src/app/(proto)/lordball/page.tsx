@@ -1,240 +1,204 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import CssBall from "./CssBall";
 import styles from "./lordball.module.css";
-import ChromeBall from "./ChromeBall";
-import ProtoCompleteChip from "@/components/ProtoCompleteChip";
 
-type Phase =
-  | "intro"
-  | "intro2"
-  | "home"
-  | "typing"
-  | "complete"
-  | "submitting"
-  | "done";
+type Phase = "idle" | "typing" | "ready" | "submitting" | "done";
+type LetterBurst = { id: string; char: string; x0: number };
 
-const TITLE = "누구를 위한 기도입니까?";
-const PLACEHOLDER = "이름을 타이핑하세요";
 const PRAY_TOTAL = 7;
+const prayCount = 3;
 
-export default function LordBallPage() {
-  const [phase, setPhase] = useState<Phase>("intro");
+export default function LordballPage() {
+  const [fontsReady, setFontsReady] = useState(false);
+  const [phase, setPhase] = useState<Phase>("idle");
   const [name, setName] = useState("");
-  const [focused, setFocused] = useState(false);
-  const [prayCount] = useState(() => Math.floor(Math.random() * PRAY_TOTAL) + 1);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [bursts, setBursts] = useState<LetterBurst[]>([]);
+  const idCounter = useRef(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  const after = useCallback((ms: number, fn: () => void) => {
-    const t = setTimeout(fn, ms);
-    timers.current.push(t);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  useEffect(() => {
+    document.fonts.load('400 1em IncheonJaram').then(() => {
+      setFontsReady(true);
+    }).catch(() => {
+      setFontsReady(true);
+    });
   }, []);
 
-  // intro → intro2 → home → typing timeline
-  useEffect(() => {
-    if (phase === "intro") after(1500, () => setPhase("intro2"));
-    else if (phase === "intro2") after(1900, () => setPhase("home"));
-    else if (phase === "home") after(1500, () => setPhase("typing"));
-  }, [phase, after]);
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const char = value.slice(-1);
 
-  // focus the input when typing begins (desktop autofocus)
-  useEffect(() => {
-    if (phase === "typing") {
-      const t = setTimeout(() => inputRef.current?.focus(), 60);
-      timers.current.push(t);
+    setName(value);
+
+    if (value.trim().length > 0) {
+      setPhase("ready");
+    } else {
+      setPhase("typing");
     }
-  }, [phase]);
 
-  // cleanup timers on unmount
-  useEffect(() => {
-    const list = timers.current;
-    return () => list.forEach(clearTimeout);
-  }, []);
+    if (char !== "") {
+      const id = String(++idCounter.current);
+      const x0 = (Math.random() - 0.5) * 120;
 
-  const confirmName = useCallback(() => {
-    if (name.trim().length === 0) return;
-    inputRef.current?.blur();
-    setPhase("complete");
-  }, [name]);
+      setBursts((prev) => [...prev, { id, char, x0 }]);
 
-  const submitPrayer = useCallback(() => {
+      const timer = setTimeout(() => {
+        setBursts((prev) => prev.filter((burst) => burst.id !== id));
+      }, 800);
+
+      timers.current.push(timer);
+    }
+  };
+
+  const handleFocus = () => {
+    setPhase((prev) => (prev === "idle" ? "typing" : prev));
+  };
+
+  const handleSubmit = () => {
+    if (phase !== "ready") {
+      return;
+    }
+
     setPhase("submitting");
-    after(3000, () => setPhase("done"));
-  }, [after]);
 
-  const focusInput = useCallback(() => {
-    if (phase === "typing") inputRef.current?.focus();
-  }, [phase]);
+    const timer = setTimeout(() => {
+      setPhase("done");
+    }, 2400);
 
-  const showOrb =
-    phase === "home" ||
-    phase === "typing" ||
-    phase === "complete" ||
-    phase === "submitting";
-  const idle = phase === "home" || phase === "typing" || phase === "complete";
-  const showTitle = phase !== "done";
+    timers.current.push(timer);
+  };
 
-  const stageClass = [
-    styles.stage,
-    phase === "intro" ? styles.stageIntro : "",
-    phase === "submitting" ? styles.stageBurst : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  const orbWrapClass = [
-    styles.orbWrap,
-    showOrb ? styles.orbVisible : "",
-    idle ? styles.orbFloat : "",
-    phase === "submitting" ? styles.orbSubmitting : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  const ctaClass = [
-    styles.cta,
-    phase === "complete" ? styles.ctaVisible : "",
-    phase === "submitting" ? styles.ctaFading : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  if (!fontsReady) {
+    return <main className={styles.root} />;
+  }
 
   return (
-    <div className={styles.root}>
-      <div className={stageClass} onClick={focusInput}>
+    <main className={styles.root}>
+      <div className={styles.stage}>
+        <div className={styles.ambient} />
+
         {/* Title */}
-        {showTitle && (
-          <h1
-            className={[
-              styles.title,
-              phase === "submitting" ? styles.titleHidden : "",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-          >
-            {TITLE}
-          </h1>
-        )}
-
-        {/* intro "주여" word */}
-        {phase === "intro" && (
-          <div className={styles.juyeoLayer}>
-            <span className={`${styles.juyeo} ${styles.juyeoBase}`}>주여</span>
-          </div>
-        )}
-
-        {/* intro2 motion-blur echoes */}
-        {phase === "intro2" && (
-          <div className={styles.juyeoLayer}>
-            <span className={`${styles.juyeo} ${styles.juyeoBase}`}>주여</span>
-            <span className={`${styles.juyeo} ${styles.juyeoEcho} ${styles.juyeoEcho1}`}>
-              주여
-            </span>
-            <span className={`${styles.juyeo} ${styles.juyeoEcho} ${styles.juyeoEcho2}`}>
-              주여
-            </span>
-            <span className={`${styles.juyeo} ${styles.juyeoEcho} ${styles.juyeoEcho3}`}>
-              주여
-            </span>
-          </div>
-        )}
-
-        {/* Orb */}
-        <div className={orbWrapClass}>
-          <ChromeBall className={styles.orbCanvas} />
-          {(phase === "typing" ||
-            phase === "complete" ||
-            phase === "submitting") && (
-            <span
-              className={[
-                styles.orbName,
-                name.length === 0 && !(phase === "typing" && focused)
-                  ? styles.orbPlaceholder
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
+        <AnimatePresence>
+          {phase !== "done" && (
+            <motion.div
+              key="title"
+              className={styles.titleBlock}
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.4 }}
             >
-              {name.length === 0
-                ? phase === "typing" && focused
-                  ? ""
-                  : PLACEHOLDER
-                : name}
-              {phase === "typing" && focused && (
-                <span className={styles.caret} />
+              <h1 className={styles.title}>누구를 위한 기도방울인가요?</h1>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Bubble */}
+        <AnimatePresence>
+          {phase !== "done" && (
+            <motion.div
+              key="bubble"
+              className={[
+                styles.bubbleWrap,
+                phase === "submitting" ? styles.bubbleSubmitting : "",
+              ].join(" ")}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 1.4, opacity: 0, y: -80 }}
+              transition={{ duration: 0.6 }}
+            >
+              <CssBall />
+              {name.trim().length > 0 && (
+                <span className={styles.bubbleName}>{name.trim()}</span>
               )}
-            </span>
+            </motion.div>
           )}
-          {/* Enter / Done indicator — visible once user has typed something */}
-          {phase === "typing" && name.trim().length > 0 && (
-            <ProtoCompleteChip onClick={confirmName} />
-          )}
-          {/* 3D orbital net cage — wraps the sphere after name is confirmed */}
-          {(phase === "complete" || phase === "submitting") && (
-            <div className={styles.netOuter}>
-              <div className={`${styles.netRing} ${styles.netRing1}`} />
-              <div className={`${styles.netRing} ${styles.netRing2}`} />
-              <div className={`${styles.netRing} ${styles.netRing3}`} />
-            </div>
-          )}
+        </AnimatePresence>
+
+        {/* Letter burst layer */}
+        <div className={styles.letterBurstLayer}>
+          <AnimatePresence>
+            {bursts.map((b) => (
+              <motion.span
+                key={b.id}
+                className={styles.letterBurst}
+                style={{ left: `calc(50% + ${b.x0}px)` }}
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 0, y: -90 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                {b.char}
+              </motion.span>
+            ))}
+          </AnimatePresence>
         </div>
 
-        {/* Cross of light during submit */}
-        {phase === "submitting" && (
-          <div className={`${styles.cross} ${styles.crossActive}`}>
-            <span className={`${styles.beam} ${styles.beamV}`} />
-            <span className={`${styles.beam} ${styles.beamH}`} />
-            <span className={styles.crossGlow} />
-          </div>
-        )}
+        {/* Input dock */}
+        <AnimatePresence>
+          {phase !== "done" && (
+            <motion.div
+              key="dock"
+              className={styles.inputDock}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <input
+                className={styles.nameInput}
+                type="text"
+                placeholder="이름을 적어주세요"
+                value={name}
+                onChange={handleNameChange}
+                onFocus={handleFocus}
+              />
+              <AnimatePresence>
+                {name.trim().length > 0 && (
+                  <motion.button
+                    key="cta"
+                    className={styles.cta}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.25 }}
+                    onClick={handleSubmit}
+                  >
+                    기도합니다
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Hidden input to capture typing */}
-        <input
-          ref={inputRef}
-          className={styles.hiddenInput}
-          value={name}
-          maxLength={20}
-          inputMode="text"
-          enterKeyHint="done"
-          onChange={(e) => setName(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") confirmName();
-          }}
-          aria-label="이름 입력"
-        />
-
-        {/* CTA */}
-        {(phase === "complete" || phase === "submitting") && (
-          <button className={ctaClass} onClick={submitPrayer}>
-            기도합니다
-          </button>
-        )}
-
-        {/* Done screen */}
-        {phase === "done" && (
-          <>
-            <div className={styles.doneOrbTop}>
-              <ChromeBall className={styles.orbCanvas} />
-            </div>
-            <div className={styles.doneCounter}>
-              <div className={styles.doneCount}>
-                {prayCount}/{PRAY_TOTAL} 주여볼
+        {/* Done view */}
+        <AnimatePresence>
+          {phase === "done" && (
+            <motion.div
+              key="done"
+              className={styles.doneView}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className={styles.doneBubbleTop}>
+                <CssBall />
+                <span className={styles.doneNameInBubble}>{name.trim()}</span>
               </div>
-              <div className={styles.doneName}>{name || "SayQ"}</div>
-            </div>
-          </>
-        )}
-
-        {/* Hint */}
-        {phase === "typing" && (
-          <div className={styles.hint}>
-            {focused ? "Enter로 완료" : "화면을 탭하여 이름을 입력하세요"}
-          </div>
-        )}
+              <p className={styles.doneCounter}>
+                {prayCount}/{PRAY_TOTAL} 기도방울
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </main>
   );
 }

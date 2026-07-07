@@ -1,11 +1,6 @@
+// Compatibility wrapper — delegates to the soap bubble implementation.
+import CssBall from "./CssBall";
+
 export default function ChromeBall({ className }: { className?: string }) {
-  return (
-    <img
-      src="/lordball-ball.png"
-      alt=""
-      aria-hidden="true"
-      className={className}
-      draggable={false}
-    />
-  );
+  return <CssBall className={className} />;
 }

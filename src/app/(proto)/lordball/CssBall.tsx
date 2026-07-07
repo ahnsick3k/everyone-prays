@@ -3,24 +3,22 @@
 import styles from "./lordball.module.css";
 
 /**
- * Pure-CSS liquid plum orb tuned to the Lordball reference.
+ * Pure-CSS soap bubble.
  *
  * Layers (bottom → top):
- *   cssBall       – near-black plum core + soft outer glow
- *   cssBallChrome – hot magenta / pink top and rim sheen
- *   cssBallBlue   – internal plum/violet body haze
- *   cssBallGold   – warm peach-white bloom near the bottom edge
- *   cssBallLimb   – center darkening + soft edge falloff for volume
- *   cssBallSpec   – thin glossy rim hits and side highlights
+ *   bubble       – transparent radial base with pale rim tint
+ *   bubbleRim    – iridescent conic gradient, rim-masked, slowly spinning
+ *   bubbleSheen  – broad translucent highlight that drifts
+ *   bubbleCaustic – faint internal color wash
+ *   bubbleGloss  – small sharp white specular hits
  */
 export default function CssBall({ className }: { className?: string }) {
   return (
-    <div className={`${styles.cssBall} ${className ?? ""}`} aria-hidden="true">
-      <span className={styles.cssBallChrome} />
-      <span className={styles.cssBallBlue} />
-      <span className={styles.cssBallGold} />
-      <span className={styles.cssBallLimb} />
-      <span className={styles.cssBallSpec} />
+    <div className={`${styles.bubble} ${className ?? ""}`} aria-hidden="true">
+      <span className={styles.bubbleRim} />
+      <span className={styles.bubbleSheen} />
+      <span className={styles.bubbleCaustic} />
+      <span className={styles.bubbleGloss} />
     </div>
   );
 }
